@@ -1,0 +1,36 @@
+Public Function DataRecs(strFileName As String, strFilePath As String) As Integer
+      '---------------------------------------------------------------------------------------
+      ' Procedure : DataRecs
+      ' Author    : Richard Wilkinson
+      ' Date      : 30/10/2015
+      ' Purpose   : Return the number of data records in strfileNamePath
+      '---------------------------------------------------------------------------------------
+      '
+      Dim iData As Integer
+      Dim strLine As String
+10    Print #99, "Looking for file =" & strFilePath & "\" & strFileName
+20    On Error GoTo DataRecs_Error
+
+30    Open strFilePath & "\" & strFileName For Input As #1
+40    While Not EOF(1)
+50        Line Input #1, strLine
+60        If Len(strLine) = 0 Then
+      '       Do nothing
+70        ElseIf Mid$(strLine, 3, 1) = ":" Then
+      '       This is data line
+80            iData = iData + 1
+90        End If
+100   Wend
+110   Close #1
+120   DataRecs = iData
+
+130   On Error GoTo 0
+140   Exit Function
+
+DataRecs_Error:
+      ' Call global reporting procedure
+150   Call GlobalErrorHandler("mdlPvUpload", "DataRecs", "Function")
+
+      ' Try to continue
+160   Resume Next
+End Function

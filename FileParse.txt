@@ -1,0 +1,138 @@
+Public Sub FileParse(strDate As String, strTempPath As String, iData As Integer, strComplete As String)
+
+      Dim strCurrentDay As String
+      Dim hdlLog As Integer, hdlIn As Integer, hdlUn As Integer
+      Dim hdlDa As Integer, hdlSy As Integer
+      Dim strRec As String
+      Dim iInfo As Integer, iUnit As Integer, iSysS As Integer
+      Dim strSect As String
+      Dim strPathDa As String
+      Dim strPathLog As String
+      Dim strFirstTime As String
+      Dim strLastTime As String
+      Dim i As Integer
+
+
+
+
+
+               Dim fso As New FileSystemObject
+               Dim f As File, path As String, sfolder As Folder
+               Dim iDat As Integer
+               'Initialize path.
+10    On Error GoTo FileParse_Error
+
+20             path = strTempPath & "\"
+               'Get a reference to the Folder object.
+30             Set sfolder = fso.GetFolder(path)
+               'Iterate through subfolders
+40             iDat = 0
+50             For Each f In sfolder.Files
+60               If Right$(f.Name, 4) = ".dat" Then
+70                   iDat = iDat + 1
+80               End If
+90             Next
+
+      ' Check for existing .dat files and delete
+100   If iDat > 0 Then
+      '    Kill strTempPath & "\" & "*.dat"
+110       Kill gstrTempPath & "\" & "*.dat"
+120   End If
+
+      'strPathLog = gstrTempPath & strCurrentDay & "-DA.dat"
+130   hdlLog = 1   '  Log File
+140   hdlIn = 2    '  Information File
+150   hdlUn = 3    '  Unit File
+160   hdlDa = 4    '  Data File
+170   hdlSy = 5    '  System File
+
+180   Open gstrTempPath & "\" & strDate & ".log" For Input As hdlLog
+190   Open gstrTempPath & "\" & strDate & "-DA.dat" For Output As hdlDa
+200   Open gstrTempPath & "\" & strDate & "-IN.dat" For Output As hdlIn
+210   Open gstrTempPath & "\" & strDate & "-SY.dat" For Output As hdlSy
+220   Open gstrTempPath & "\" & strDate & "-Un.dat" For Output As hdlUn
+
+230   While Not EOF(hdlLog)
+240       Line Input #hdlLog, strRec
+      '   Debug.Print strRec
+250       If Mid$(strRec, 4, 6) = "[info]" Then 'log file contains 3 non printing characters at start
+260           strRec = Mid(strRec, 4)
+      '       Debug.Print strRec
+270           iInfo = 0
+280           strSect = "Info"
+290       ElseIf Left$(strRec, 14) = "[measurements]" Then
+300           iUnit = 0
+310           strSect = "Unit"
+320       ElseIf Left$(strRec, 7) = "[start]" Then
+330           iData = 0
+340           strSect = "Data"
+350       ElseIf Left$(strRec, 15) = "[system status]" Then
+360           iSysS = -1
+370           strSect = "SysS"
+380       ElseIf Len(strRec) = 0 Then
+      '       skip blank record
+      '       Debug.Print "xxxxxxxxxx"
+390           strSect = "Skip"
+400       ElseIf Mid$(strRec, 3, 1) = ":" Then
+      '       this is a data record but something is probably out of place in file
+410           strSect = "Data"
+420       End If
+          
+430       Select Case strSect
+              Case "Skip"
+440           Case "Info"
+450               iInfo = iInfo + 1
+460               If iInfo > 1 Then
+470                   Print #hdlIn, strRec
+480               End If
+490           Case "Unit"
+500               iUnit = iUnit + 1
+510               If iUnit > 1 Then
+520                   Print #hdlUn, strRec
+530               End If
+540           Case "SysS"
+550               iSysS = iSysS + 1
+560               If iSysS > 0 Then
+570                   Print #hdlSy, strRec
+580               End If
+590           Case "Data"
+600               iData = iData + 1
+610               If iData = 2 Then strFirstTime = Mid$(strRec, 1, 5)   'assumes that time is first field
+620               If iData > 1 Then
+630                   strLastTime = Mid$(strRec, 1, 5)
+      '               skip data header record
+      '               Need to test for duff records, zero values other than first data record
+      '               this can happen with power cut eg
+      '               Debug.Print strRec
+640                   Print #hdlDa, strRec
+650               End If
+660           Case Else
+670       End Select
+          
+680   Wend
+690   iData = iData - 1 ' adjust for skipped header record
+      ' Now do some checking to see if the data is complete
+700   strComplete = IsDataComplete(strDate, iSysS, iData, strSect, strFirstTime, strLastTime)
+
+      'MsgBox "Datafile state = " & strComplete
+      ' Update Days table ********************************************************************************************
+      'i = UpDateDays(strDate, strComplete)  'this update moved to DataBaseUpdate
+      'MsgBox "Partial Update Status = " & i
+
+710   Close hdlLog
+720   Close hdlDa
+730   Close hdlIn
+740   Close hdlSy
+750   Close hdlUn
+
+760   On Error GoTo 0
+770   Exit Sub
+
+FileParse_Error:
+      ' Call global reporting procedure
+780   Call GlobalErrorHandler("mdlPvUpload", "FileParse", "Sub")
+
+      ' Try to continue
+790   Resume Next
+
+End Sub

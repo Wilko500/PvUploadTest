@@ -1,0 +1,51 @@
+Public Function ScanForLogFile() As String
+      'Procedure to do file scan for logfile
+      'if found carry out processing as per processing flags
+      Dim i As Integer
+      Dim objFso As FileSystemObject
+      Dim objFolder As Folder
+      Dim objFile As File
+      Dim OldestDate As Date
+      Dim OldestName As String
+      Dim DateOfFile As Date
+      ' MsgBox "X" & gstrLogFilePath & "X"
+10    On Error GoTo ScanForLogFile_Error
+
+20    Set objFso = New FileSystemObject
+30    Set objFolder = objFso.GetFolder(gstrLogFilePath)
+40    i = 0
+50    OldestDate = Now()
+60    OldestName = ""
+
+70    For Each objFile In objFolder.Files
+80       If LCase(objFso.GetExtensionName(objFile.Name)) = "log" Then
+90          DateOfFile = CDate(GetFileNamePart(objFile.Name))
+100         If DateOfFile < OldestDate Then
+110            OldestDate = DateOfFile
+120            OldestName = objFile.Name
+130            i = 1
+140         End If
+         
+            
+150      End If
+160   Next
+170   If i = 1 Then
+
+180      ScanForLogFile = OldestName
+190   Else
+200      ScanForLogFile = "Do Nothing"
+210   End If
+220   Set objFso = Nothing
+230   Set objFolder = Nothing
+
+240   On Error GoTo 0
+250   Exit Function
+
+ScanForLogFile_Error:
+      ' Call global reporting procedure
+260   Call GlobalErrorHandler("mdlPvUpload", "ScanForLogFile", "Function")
+
+      ' Try to continue
+270   Resume Next
+
+End Function

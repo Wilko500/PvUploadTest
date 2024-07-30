@@ -1,0 +1,261 @@
+object frmSettings: TfrmSettings
+  Left = 280
+  Height = 363
+  Top = 250
+  Width = 622
+  BorderStyle = bsDialog
+  Caption = 'frmSettings'
+  ClientHeight = 348
+  ClientWidth = 607
+  OnActivate = FormActivate
+  Position = poOwnerFormCenter
+  object PageControl1: TPageControl
+    Left = 16
+    Height = 272
+    Top = 48
+    Width = 576
+    ActivePage = TabSheet1
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -13
+    Font.Name = '.SF NS'
+    ParentFont = False
+    TabIndex = 0
+    TabOrder = 0
+    OnChange = PageControl1Change
+    object TabSheet1: TTabSheet
+      Caption = 'Paths'
+      ClientHeight = 236
+      ClientWidth = 570
+      Font.CharSet = ANSI_CHARSET
+      Font.Height = -13
+      Font.Name = '.SF NS'
+      OnContextPopup = TabSheet1ContextPopup
+      ParentFont = False
+      object Edit1: TEdit
+        Left = 112
+        Height = 28
+        Top = 25
+        Width = 340
+        AutoSize = False
+        Enabled = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 0
+        Text = 'This is a line of test text'
+      end
+      object Edit2: TEdit
+        Left = 112
+        Height = 28
+        Top = 60
+        Width = 340
+        AutoSize = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 1
+        Text = 'This is a line of test text'
+      end
+      object Label2: TLabel
+        Left = 20
+        Height = 16
+        Top = 32
+        Width = 89
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'App Path :'
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        ParentFont = False
+      end
+      object Label3: TLabel
+        Left = 20
+        Height = 16
+        Top = 67
+        Width = 89
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'Curl Path :'
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -12
+        Font.Name = '.SF NS'
+        ParentFont = False
+      end
+      object Button1: TButton
+        Left = 480
+        Height = 25
+        Top = 96
+        Width = 75
+        Caption = 'Get Path'
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 2
+      end
+      object Label4: TLabel
+        Left = 24
+        Height = 16
+        Top = 103
+        Width = 85
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'Log File Path :'
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -12
+        Font.Name = '.SF NS'
+        ParentFont = False
+      end
+      object Edit3: TEdit
+        Left = 112
+        Height = 28
+        Top = 96
+        Width = 340
+        AutoSize = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 3
+        Text = 'This is a line of test text'
+      end
+      object Label5: TLabel
+        Left = 20
+        Height = 16
+        Top = 139
+        Width = 89
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'Temp Path :'
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -12
+        Font.Name = '.SF NS'
+        ParentFont = False
+      end
+      object Edit4: TEdit
+        Left = 112
+        Height = 28
+        Top = 132
+        Width = 340
+        AutoSize = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 4
+        Text = 'This is a line of test text'
+      end
+      object Label6: TLabel
+        Left = 20
+        Height = 16
+        Top = 173
+        Width = 89
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'Archive Path :'
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -12
+        Font.Name = '.SF NS'
+        ParentFont = False
+      end
+      object Edit5: TEdit
+        Left = 112
+        Height = 28
+        Top = 166
+        Width = 340
+        AutoSize = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 5
+        Text = 'This is a line of test text'
+      end
+      object Label7: TLabel
+        Left = 4
+        Height = 16
+        Top = 206
+        Width = 105
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'DataBase Path :'
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -12
+        Font.Name = '.SF NS'
+        ParentFont = False
+        OnClick = Label7Click
+      end
+      object Edit6: TEdit
+        Left = 112
+        Height = 28
+        Top = 200
+        Width = 340
+        AutoSize = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 6
+        Text = 'This is a line of test text'
+        OnChange = Edit6Change
+      end
+    end
+    object TabSheet2: TTabSheet
+      Caption = 'Timers'
+      Font.CharSet = ANSI_CHARSET
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      ParentFont = False
+    end
+    object TabSheet3: TTabSheet
+      Caption = 'Processing'
+    end
+    object TabSheet4: TTabSheet
+      Caption = 'PV System'
+    end
+    object TabSheet5: TTabSheet
+      Caption = 'Validation'
+    end
+    object TabSheet6: TTabSheet
+      Caption = 'PV Upload'
+    end
+  end
+  object Label1: TLabel
+    Left = 240
+    Height = 25
+    Top = 16
+    Width = 159
+    Caption = 'Program Settings'
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -21
+    Font.Name = 'Tahoma'
+    ParentFont = False
+  end
+  object Button2: TButton
+    Left = 216
+    Height = 25
+    Top = 328
+    Width = 75
+    Caption = 'Save'
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -13
+    Font.Name = 'Tahoma'
+    ParentFont = False
+    TabOrder = 1
+  end
+  object Button3: TButton
+    Left = 320
+    Height = 25
+    Top = 328
+    Width = 75
+    Caption = 'Exit'
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -13
+    Font.Name = 'Tahoma'
+    ParentFont = False
+    TabOrder = 2
+  end
+end

@@ -1,0 +1,509 @@
+object frmAuroraDataUpload: TfrmAuroraDataUpload
+  Left = 254
+  Height = 677
+  Top = 116
+  Width = 855
+  BorderStyle = bsDialog
+  BorderWidth = 4
+  Caption = 'PvUploadTest'
+  ClientHeight = 677
+  ClientWidth = 855
+  Color = 14079702
+  OnActivate = FormActivate
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
+  Position = poScreenCenter
+  object ListView1: TListView
+    Left = 24
+    Height = 122
+    Top = 120
+    Width = 690
+    Columns = <    
+      item
+        Caption = 'Date'
+        Width = 102
+      end    
+      item
+        Caption = 'Power'
+        Width = 88
+      end    
+      item
+        Caption = 'Energy'
+        Width = 90
+      end    
+      item
+        Caption = 'Peak'
+        Width = 66
+      end>
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    HideSelection = False
+    Items.LazData = {
+      D900000005000000FFFFFFFFFFFFFFFFFFFFFFFF030000000A00000032352F30
+      362F3230323405000000333431323804000000313936300400000032313030FF
+      FFFFFFFFFFFFFFFFFFFFFF030000000A00000032342F30362F32303234050000
+      003332313334040000003139353803000000393030FFFFFFFFFFFFFFFFFFFFFF
+      FF00000000050000004974656D38FFFFFFFFFFFFFFFFFFFFFFFF000000000500
+      00004974656D39FFFFFFFFFFFFFFFFFFFFFFFF00000000060000004974656D31
+      30FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    }
+    ParentFont = False
+    ReadOnly = True
+    ScrollBars = ssVertical
+    TabOrder = 0
+  end
+  object lblTitle: TLabel
+    Left = 310
+    Height = 25
+    Top = 14
+    Width = 201
+    Caption = 'Aurora Data Uploader'
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -21
+    Font.Name = 'Tahoma'
+    ParentFont = False
+  end
+  object lblVer: TLabel
+    Left = 520
+    Height = 16
+    Top = 26
+    Width = 80
+    AutoSize = False
+    Caption = 'Ver 1.12.34'
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -12
+    Font.Name = 'Helvetica'
+    Font.Style = [fsItalic]
+    ParentFont = False
+  end
+  object Panel1: TPanel
+    Left = 25
+    Height = 30
+    Top = 50
+    Width = 681
+    BevelOuter = bvNone
+    BorderWidth = 1
+    BorderStyle = bsSingle
+    ClientHeight = 30
+    ClientWidth = 681
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -13
+    Font.Name = 'Avenir Next'
+    ParentBackground = False
+    ParentColor = False
+    ParentFont = False
+    TabOrder = 1
+    object Label3: TLabel
+      Left = 8
+      Height = 18
+      Top = 8
+      Width = 39
+      AutoSize = False
+      Caption = 'Name :'
+      Font.CharSet = ANSI_CHARSET
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      ParentFont = False
+    end
+    object Label4: TLabel
+      Left = 280
+      Height = 18
+      Top = 8
+      Width = 86
+      AutoSize = False
+      Caption = 'Inverter model :'
+      Font.CharSet = ANSI_CHARSET
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      ParentFont = False
+    end
+    object Label5: TLabel
+      Left = 512
+      Height = 18
+      Top = 8
+      Width = 75
+      AutoSize = False
+      Caption = 'System Date :'
+      Font.CharSet = ANSI_CHARSET
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      ParentFont = False
+    end
+    object lblSystemName: TLabel
+      Left = 50
+      Height = 18
+      Top = 8
+      Width = 136
+      AutoSize = False
+      Caption = 'lblSystemName'
+      Font.CharSet = ANSI_CHARSET
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      ParentFont = False
+    end
+    object lblInvModel: TLabel
+      Left = 370
+      Height = 18
+      Top = 8
+      Width = 136
+      AutoSize = False
+      Caption = 'lblInvModel'
+      Font.CharSet = ANSI_CHARSET
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      ParentFont = False
+    end
+    object lblSystemDate: TLabel
+      Left = 589
+      Height = 18
+      Top = 8
+      Width = 80
+      AutoSize = False
+      Caption = 'lblSystemDate'
+      Font.CharSet = ANSI_CHARSET
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      ParentFont = False
+    end
+  end
+  object Label2: TLabel
+    Left = 48
+    Height = 14
+    Top = 42
+    Width = 38
+    Caption = 'System'
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -12
+    Font.Name = 'Tahoma'
+    ParentFont = False
+  end
+  object Label7: TLabel
+    Left = 24
+    Height = 14
+    Top = 100
+    Width = 73
+    Caption = 'Power History'
+    Font.CharSet = ANSI_CHARSET
+    Font.Color = clBlack
+    Font.Height = -12
+    Font.Name = 'Tahoma'
+    ParentFont = False
+  end
+  object cmdSettings: TButton
+    Left = 725
+    Height = 25
+    Top = 120
+    Width = 97
+    Caption = 'Settings'
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -13
+    Font.Name = 'Tahoma'
+    ParentFont = False
+    TabOrder = 2
+    OnClick = cmdSettingsClick
+  end
+  object Button2: TButton
+    Left = 24
+    Height = 25
+    Top = 633
+    Width = 104
+    Caption = 'Force Re-Scan'
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -13
+    Font.Name = 'Helvetica Neue'
+    ParentFont = False
+    TabOrder = 3
+  end
+  object Button3: TButton
+    Left = 725
+    Height = 25
+    Top = 633
+    Width = 104
+    Caption = 'Force Re-Load'
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -13
+    Font.Name = 'Helvetica Neue'
+    ParentFont = False
+    TabOrder = 4
+  end
+  object Label10: TLabel
+    Left = 24
+    Height = 16
+    Top = 258
+    Width = 96
+    AutoSize = False
+    Caption = 'Days Logged'
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -12
+    Font.Name = 'Tahoma'
+    ParentFont = False
+  end
+  object Label11: TLabel
+    Left = 725
+    Height = 16
+    Top = 258
+    Width = 97
+    AutoSize = False
+    Caption = 'Days UpLoaded'
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -12
+    Font.Name = 'Tahoma'
+    ParentFont = False
+  end
+  object Label12: TLabel
+    Left = 143
+    Height = 16
+    Top = 258
+    Width = 95
+    AutoSize = False
+    Caption = 'File Scan Errors'
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -12
+    Font.Name = 'Tahoma'
+    ParentFont = False
+  end
+  object Label13: TLabel
+    Left = 434
+    Height = 16
+    Top = 258
+    Width = 112
+    AutoSize = False
+    Caption = 'Data UpLoad Errors'
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -12
+    Font.Name = 'Tahoma'
+    ParentFont = False
+  end
+  object Label14: TLabel
+    Left = 272
+    Height = 16
+    Top = 258
+    Width = 144
+    Alignment = taRightJustify
+    AutoSize = False
+    Caption = 'Next Scan in xx.xx secs'
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -12
+    Font.Name = 'Tahoma'
+    ParentFont = False
+  end
+  object Label15: TLabel
+    Left = 544
+    Height = 16
+    Top = 258
+    Width = 162
+    Alignment = taRightJustify
+    AutoSize = False
+    Caption = 'Next UpLoad in xx.xx secs'
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -12
+    Font.Name = 'Tahoma'
+    ParentFont = False
+  end
+  object Label16: TLabel
+    Left = 143
+    Height = 16
+    Top = 462
+    Width = 88
+    AutoSize = False
+    Caption = 'FileScan Log'
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -12
+    Font.Name = 'Tahoma'
+    ParentFont = False
+  end
+  object Label17: TLabel
+    Left = 434
+    Height = 16
+    Top = 462
+    Width = 86
+    AutoSize = False
+    Caption = 'UpLoad Log'
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -12
+    Font.Name = 'Tahoma'
+    ParentFont = False
+  end
+  object cmdStart: TButton
+    Left = 725
+    Height = 25
+    Top = 154
+    Width = 97
+    Caption = 'Start'
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -13
+    Font.Name = 'Tahoma'
+    ParentFont = False
+    TabOrder = 5
+    OnClick = cmdStartClick
+  end
+  object Button5: TButton
+    Left = 725
+    Height = 25
+    Top = 188
+    Width = 97
+    Caption = 'Stop'
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -13
+    Font.Name = 'Tahoma'
+    ParentFont = False
+    TabOrder = 6
+    OnClick = Button5Click
+  end
+  object cmdfrmAuroraExit: TButton
+    Left = 725
+    Height = 20
+    Top = 222
+    Width = 97
+    Caption = 'Exit'
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -13
+    Font.Name = 'Tahoma'
+    ParentFont = False
+    TabOrder = 7
+    OnClick = cmdfrmAuroraExitClick
+  end
+  object Button7: TButton
+    Left = 725
+    Height = 20
+    Top = 64
+    Width = 48
+    Caption = 'Show'
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -13
+    Font.Name = 'Tahoma'
+    ParentFont = False
+    TabOrder = 8
+  end
+  object Button8: TButton
+    Left = 780
+    Height = 20
+    Top = 64
+    Width = 42
+    Caption = 'Hide'
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -13
+    Font.Name = 'Tahoma'
+    ParentFont = False
+    TabOrder = 9
+  end
+  object Label18: TLabel
+    Left = 725
+    Height = 15
+    Top = 32
+    Width = 96
+    Alignment = taCenter
+    AutoSize = False
+    Caption = ' Web  View'
+    Font.CharSet = ANSI_CHARSET
+    Font.Color = clBlack
+    Font.Height = -12
+    Font.Name = 'Tahoma'
+    Font.Style = [fsUnderline]
+    ParentFont = False
+  end
+  object Button1: TButton
+    Left = 725
+    Height = 25
+    Top = 88
+    Width = 75
+    Caption = 'Button1'
+    TabOrder = 10
+    OnClick = Button1Click
+  end
+  object RmLoggedDays: TRichMemo
+    Left = 24
+    Height = 346
+    Top = 276
+    Width = 104
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -12
+    Font.Name = '.SF NS'
+    HideSelection = False
+    ParentFont = False
+    TabOrder = 11
+    ZoomFactor = 1
+  end
+  object RmUploadDays: TRichMemo
+    Left = 725
+    Height = 346
+    Top = 276
+    Width = 104
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -12
+    Font.Name = '.SF NS'
+    HideSelection = False
+    ParentFont = False
+    TabOrder = 12
+    ZoomFactor = 1
+  end
+  object RmFileScanError: TRichMemo
+    Left = 143
+    Height = 180
+    Top = 276
+    Width = 272
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -12
+    Font.Name = '.SF NS'
+    HideSelection = False
+    ParentFont = False
+    TabOrder = 13
+    ZoomFactor = 1
+  end
+  object RmPvUploadError: TRichMemo
+    Left = 430
+    Height = 180
+    Top = 276
+    Width = 284
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -12
+    Font.Name = '.SF NS'
+    HideSelection = False
+    OnChange = RmPvUploadErrorChange
+    ParentFont = False
+    TabOrder = 14
+    ZoomFactor = 1
+  end
+  object RmFileScanLog: TRichMemo
+    Left = 143
+    Height = 180
+    Top = 478
+    Width = 272
+    HideSelection = False
+    TabOrder = 15
+    ZoomFactor = 1
+  end
+  object RmPvUploadLog: TRichMemo
+    Left = 430
+    Height = 180
+    Top = 478
+    Width = 284
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -12
+    Font.Name = '.SF NS'
+    HideSelection = False
+    ParentFont = False
+    TabOrder = 16
+    ZoomFactor = 1
+  end
+  object lblCurDate: TLabel
+    Left = 688
+    Height = 16
+    Top = 8
+    Width = 152
+    Alignment = taRightJustify
+    AutoSize = False
+    Caption = '12:54:23 on 15 July 2025'
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -12
+    Font.Name = 'Tahoma'
+    ParentFont = False
+  end
+  object tmrDisplayDate: TTimer
+    OnTimer = tmrDisplayDateTimer
+    OnStartTimer = tmrDisplayDateStartTimer
+    Left = 8
+    Top = 8
+  end
+end

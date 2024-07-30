@@ -1,0 +1,45 @@
+Public Sub ReadUnFile(strDate As String, strColNames As String, strUnits As String)
+      ' Function to read information file, yyyy-mm-dd-UN.dat file
+      '
+10    On Error GoTo ReadUnFile_err
+      Dim strPath As String
+      Dim strLine As String
+      Dim iTmp As Integer
+
+20    strLine = ""
+30    strPath = gstrTempPath
+40    Open strPath & "\" & strDate & "-UN.dat" For Input As #1
+50    iTmp = 1
+60    Line Input #1, strLine
+70    strColNames = Mid$(strLine, 1, Len(strLine) - 1)   'last char is redundant ";"
+80    iTmp = 2
+90    Line Input #1, strLine
+100   strUnits = Mid$(strLine, 1, Len(strLine) - 1)      'last char is redundant ";"
+      'Close #1
+
+
+Exit_ReadUnFile:
+110   Close #1
+120   Exit Sub
+
+ReadUnFile_err:
+130       If Err.Number = 62 Then
+      '       eof reached prematurley
+140           If iTmp = 1 Then
+      '          input past EOF
+150              strColNames = "Not Provided"
+160              strUnits = "Not Provided"
+170              Resume Exit_ReadUnFile
+180           Else
+190               strUnits = "Not Provided"
+200               Resume Exit_ReadUnFile
+210           End If
+              
+220       Else
+      '        MsgBox Err.Description & vbCrLf & Err.Number
+      '        Resume Exit_ReadUnFile
+230           Close #1
+240           Call GlobalErrorHandler("mdlPvUpload", "ReadUnFile", "Sub")
+250           Resume Next
+260       End If
+End Sub

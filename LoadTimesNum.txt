@@ -1,0 +1,38 @@
+Public Sub LoadTimesNum(arStrNumbers() As Integer, strArrayOfNumbers As String)
+      '---------------------------------------------------------------------------------------
+      ' Procedure : LoadTimesNum
+      ' Author    : Richard Wilkinson
+      ' Date      : 04/12/2015
+      ' Purpose   : Load string of numbers from ini file into array of individual numbers
+      '---------------------------------------------------------------------------------------
+      '
+      Dim arTemp() As String
+      Dim i As Integer
+      Dim intNumberAssumed As Integer
+10    On Error GoTo LoadTimesNum_Error
+20    intNumberAssumed = 50
+30    arTemp = Split(strArrayOfNumbers, ";")
+40    If UBound(arTemp) <> 11 Then
+      '   Not enough values, default number assumed
+      '   Write error to log
+50    Call SendToRtfBox(frmAuroraDataUpload.rtfFileScanError, Format(Time$, "hh:mm") & " - " & Format(Now(), "yyyy-mm-dd") & " - Not enough number values", True)
+
+60    For i = 0 To 11
+70        arStrNumbers(i + 1) = intNumberAssumed
+80    Next
+90    Else
+100   For i = 0 To 11
+110       arStrNumbers(i + 1) = arTemp(i)
+120   Next
+130   End If
+
+140   On Error GoTo 0
+150   Exit Sub
+
+LoadTimesNum_Error:
+      ' Call global reporting procedure
+160   Call GlobalErrorHandler("mdlPvUpload", "LoadTimesNum", "Sub")
+
+      ' Try to continue
+170   Resume Next
+End Sub

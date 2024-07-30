@@ -1,0 +1,39 @@
+Public Function DoesTimeExist(strConn As String, sngDayId As Long, strTime As String) As Integer
+      '
+      ' Function to check if record exists for current data record, Date & Time
+      '
+      Dim strSql As String
+      Dim rsTime As ADODB.Recordset
+      Dim iTime As Integer
+      Dim iDayId As Long
+      'iDayId = 1
+
+10    On Error GoTo DoesTimeExist_Error
+
+20    strSql = "SELECT * FROM TIMES WHERE [DayId] = " & sngDayId & " AND [Time] = #" & strTime & "#;"
+      'strSQL = "Select * from TIMES  where [DayId] = " & iDayId & ";"
+
+      'MsgBox strSQL
+30    Set rsTime = New ADODB.Recordset
+40    rsTime.Open strSql, strConn, adOpenKeyset, adLockOptimistic, adCmdText
+50    iTime = rsTime.RecordCount
+60    If iTime = 0 Then
+         'not found
+70       DoesTimeExist = 0
+80    Else
+         'found
+90          DoesTimeExist = -1
+100   End If
+110   rsTime.Close
+120   Set rsTime = Nothing
+
+130   On Error GoTo 0
+140   Exit Function
+
+DoesTimeExist_Error:
+      ' Call global reporting procedure
+150   Call GlobalErrorHandler("mdlPvUpload", "DoesTimeExist", "Function")
+
+      ' Try to continue
+160   Resume Next
+End Function

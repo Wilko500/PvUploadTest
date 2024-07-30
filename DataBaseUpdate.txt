@@ -1,0 +1,158 @@
+Public Sub DataBaseUpdate(strDate As String, iDup As Integer, iUpd As Integer, iZero As Integer, _
+                          strComplete As String, strSystemName As String, _
+                          strModelNo As String, strSystemDate As String)
+      ' Test Database Update
+      ' Read files    yyyy-mm-dd-IN.dat   Information file
+      '               yyyy-mm-dd-UN.dat   Units file
+      '               yyyy-mm-dd-DA.dat   Data file
+      '               yyyy-mm-dd-SY.dat   System file
+      '
+      ' Need to extract relevant information and update referenced database
+      ' fields before reading the actual data
+      '
+10    On Error GoTo DataBaseUpdate_Error
+
+20    On Error GoTo 0
+      'Dim strDate As String
+      'Dim strSystemName As String
+      Dim strColNames As String
+      Dim strUnits As String
+      Dim strTimeOn As String
+      Dim strTimeOff As String
+      Dim sngEnergyToday As Single
+      Dim sngEnergyLife As Single
+      Dim strConn As String
+      Dim sngDayId As Long
+      Dim sngInverterId As Long
+      Dim sngUnitId As Long
+      'Dim strModelNo As String
+      Dim strMPPT As String
+      Dim strPath As String
+      Dim arCols() As String
+      Dim arData() As String
+      Dim iNewRecs As Integer
+      Dim iDupRecs As Integer
+      Dim iZeroRecs As Integer
+      Dim j As Integer
+      Dim strSql As String
+      Dim rs As ADODB.Recordset
+      Dim strLine As String
+      Dim iCols As Integer
+      Dim strTime As String
+      Dim strDbFullPath As String
+      'Dim strSystemDate As String
+
+
+      ' Extract relevant information
+      ' First, the information file
+      'strDate = "2014-02-23"   ' *******************this needs to be passed as a variable, global???
+      'strDate = "2015-06-19"   ' *******************this needs to be passed as a variable, global???
+      'strDate = "2014-03-29"    ' *******************this needs to be passed as a variable, global???
+
+30    Call ReadInFile(strDate, strSystemName, strSystemDate)
+
+      ' Second, the units file
+40    Call ReadUnFile(strDate, strColNames, strUnits)
+
+      ' Third, the system file
+50    Call ReadSyFile(strDate, strTimeOn, strTimeOff, sngEnergyToday, sngEnergyLife)
+
+        ' *****************************for testing only
+      ' check results
+      'MsgBox "System Name = " & "X" & strSystemName & "X"
+      'MsgBox "Col Names = " & "X" & strColNames & "X" & vbCrLf & "Units = " & "X" & strUnits & "X"
+      'MsgBox "Time On=" & strTimeOn & vbCrLf & "Time Off=" & strTimeOff & vbCrLf & "Energy Today=" & sngEnergyToday & vbCrLf & "Energy Life=" & sngEnergyLife
+      '
+      ' and update referenced database
+60    strDbFullPath = gstrDatabasePath & "\" & "PvDataBase.mdb"
+70    strConn = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" & strDbFullPath & ";User Id=admin;Password=;"
+
+80    sngUnitId = GetUnitId(strConn, strColNames, strUnits)
+      'sngInverterId = GetInverterId(strConn, strModelNo, strMPPT, strSystemName)  ' ***************move into loop with single execution
+90    sngDayId = GetDayId(strConn, strDate, strTimeOn, strTimeOff, sngEnergyToday, sngEnergyLife, sngUnitId, strComplete)
+      'sngInverterId = GetInverterId(strConn, strModelNo, strMPPT, strSystemName)  ' ***************move into loop with single execution
+
+      ' OK to here
+
+      'MsgBox "DayId=" & sngDayId
+
+
+      ' Now read the data file and update database  ===============================================================
+100   On Error GoTo 0
+110   strPath = gstrTempPath
+120   strSql = "Select * from TIMES  where [DayId] = " & sngDayId & ";"
+130   Set rs = New ADODB.Recordset
+140   rs.Open strSql, strConn, adOpenKeyset, adLockOptimistic, adCmdText
+150   Open strPath & "\" & strDate & "-DA.dat" For Input As #1
+
+      ' columns
+160   arCols = Split(strColNames, ";")
+170   iCols = UBound(arCols)
+180   iNewRecs = 0
+190   iDupRecs = 0
+200   iZeroRecs = 0
+210   While Not EOF(1)
+220       Line Input #1, strLine    'data line
+230       arData = Split(strLine, ";")
+240       If Not IsRecAllZero(arData(), iCols) Then
+      '       Use this record
+      '       arData = Split(strLine, ";")
+      '       need model & MPPT from data line
+250           strTime = arData(0)
+      '       MsgBox "DoesTimeExist = " & DoesTimeExist(strConn, sngDayId, strTime)
+260           If DoesTimeExist(strConn, sngDayId, strTime) = False Then
+      '          OK to add new record
+270              iNewRecs = iNewRecs + 1
+280              rs.AddNew
+                 'rs.AddNew arCols(), arData()
+290              rs!DayId = sngDayId
+      '          rs!model = sngInverterId
+      '          rs!MPPT = sngInverterId
+300              rs!UPLOADED = "N"
+310              For j = 0 To iCols
+320                  Select Case j
+                     Case 2, 3
+                         ' model/MPPT done above
+330                      strModelNo = arData(2)
+340                      strMPPT = arData(3)
+      '                  sngInverterId = GetInverterId(strConn, strModelNo, strMPPT, strSystemName)  ' ***************move into loop with single execution
+350                  Case Else
+                         'number
+360                      rs.Fields(arCols(j)) = "" & arData(j) & ""
+370                  End Select
+380              Next
+390              sngInverterId = GetInverterId(strConn, strModelNo, strMPPT, strSystemName)  ' ***************move into loop with single execution
+400              rs!model = sngInverterId
+410              rs!MPPT = sngInverterId
+420              rs.Update
+430              rs.Requery    ' needed to ensure that the recordset is updated.
+440          Else
+      '          Time already found do nothing
+450              iDupRecs = iDupRecs + 1
+                 'Debug.Print "Ignored = " & strLine
+460          End If
+470       Else
+480          iZeroRecs = iZeroRecs + 1
+      '       Debug.Print "Ignored = " & strLine
+490       End If
+500   Wend
+510   Close #1
+520   If iNewRecs > 0 Then iUpd = iNewRecs
+530   If iDupRecs > 0 Then iDup = iDupRecs
+540   If iZeroRecs > 0 Then iZero = iZeroRecs
+550   rs.Close
+560   Set rs = Nothing
+570   Close #1
+580   Call UpdateLogWindows  ' Update DaysLogged and DaysUploaded log windows
+
+590   On Error GoTo 0
+600   Exit Sub
+
+DataBaseUpdate_Error:
+      ' Call global reporting procedure
+610   Call GlobalErrorHandler("mdlPvUpload", "DataBaseUpdate", "Sub")
+
+      ' Try to continue
+620   Resume Next
+
+End Sub

@@ -1,0 +1,44 @@
+Public Sub GlobalErrorHandler(strModule As String, strProc As String, strProcType As String)
+
+      '---------------------------------------------------------------------------------------
+      ' Procedure : GlobalErrorHandler
+      ' Author    : Richard Wilkinson
+      ' Date      : 31/10/2015
+      ' Purpose   : Global procedure to log details of unhandled error
+      '---------------------------------------------------------------------------------------
+      '
+      Dim fName As String
+      Dim strA As String
+      Dim HasErrorLog As Integer
+      fName = gstrDebugLogFilePath & "\PvDebugLog.txt"
+10           strA = "Error " & _
+                     Err.Number & " (" & _
+                     Err.Description & ") in  module " & _
+                     strModule & ", " & _
+                     strProcType & ", " & _
+                     strProc & " at line no " & _
+                     Erl
+                     
+20    Call SendToRtfBox(frmAuroraDataUpload.rtfFileScanError, Format(Time$, "hh:mm") & " - " & Format(Now(), "yyyy-mm-dd") & " - " & strA, True)
+          
+      ' Write to log file if DebugModeOn = True
+30    If gblnDeBugModeOn = True Then
+40        HashErrorLog = FreeFile
+50        If Not FileExists(fName) Then
+60            MsgBox "Open file " & fName
+70            Open fName For Output As HashErrorLog
+80        Else
+90            Open fName For Append As HashErrorLog
+100       End If
+110       Write #HashErrorLog, Format(Time$, "hh:mm") & " - " & Format(Now(), "yyyy-mm-dd") & " - " & strA
+120       gintDebugRecs = gintDebugRecs + 1
+130       frmSettings.txtDebugRecs.Text = frmSettings.txtDebugRecs.Text + 1
+          'Upgate record count in ini file and form
+140       WriteIniValue App.path & "\PvUpload.ini", "PvSystem", "DebugRecs", frmSettings.txtDebugRecs.Text
+150       frmSettings.txtDebugRecs.Text = gintDebugRecs
+          'MsgBox "error written"
+160       Close #HashErrorLog
+170   Else
+          'Do nothing
+180   End If
+End Sub

@@ -1,0 +1,46 @@
+Public Sub CopyMoveFile(strSourcePath As String, strDestPath As String, strFileName As String, strCopyMove As String, strError As String)
+      'Procesdure to copy or move file from source path to destination path
+      '           flag strCopyMove is a flag indication whether to copy of move file
+      '           not intended for use with wildcards
+      '
+      Dim objFso As New FileSystemObject
+10    On Error GoTo CopyMoveFile_Error
+
+20    If objFso.FolderExists(strSourcePath) Then
+      '   then ok to check for logfile
+      'MsgBox "CopyMove Source File" & vbCrLf & strSourcePath & "\" & strFileName
+30        If objFso.FileExists(strSourcePath & "\" & strFileName) Then
+      '       log file exists so copy to temp folder
+      '       Check destination folder
+40           If Not objFso.FolderExists(strDestPath) Then
+      '           Need to create destination folder
+50                objFso.CreateFolder (strDestPath)
+60            End If
+      '       Do the copy or move
+70            If strCopyMove = "C" Then
+80                objFso.CopyFile strSourcePath & "\" & strFileName, strDestPath & "\" & strFileName, True ' need full path due to copyfile bug
+90            Else
+             ' need to check if file exists first
+100               If objFso.FileExists(strDestPath & "\" & strFileName) Then
+110                   objFso.DeleteFile (strDestPath & "\" & strFileName)
+120               End If
+130               objFso.MoveFile strSourcePath & "\" & strFileName, strDestPath & "\" & strFileName
+140           End If
+150       Else
+      '       logfile not found, return message
+160           strError = strFileName & "not found"
+170       End If
+180   Else
+190   End If
+200   Set objFso = Nothing
+
+210   On Error GoTo 0
+220   Exit Sub
+
+CopyMoveFile_Error:
+      ' Call global reporting procedure
+230   Call GlobalErrorHandler("mdlPvUpload", "CopyMoveFile", "Sub")
+
+      ' Try to continue
+240   Resume Next
+End Sub

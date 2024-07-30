@@ -1,0 +1,38 @@
+Private Function GetUnitId(strConn As String, strColName As String, strUnit As String) As Long
+      ' Function to get UnitId from UNIT table
+      ' Create record if none exists
+      '
+      Dim strSql As String
+      Dim rsUnit As ADODB.Recordset
+      Dim iUnit As Integer
+
+10    On Error GoTo Err_GetUnitId
+20    strSql = "SELECT * FROM UNITS WHERE [ColName] = '" & strColName & "';"
+30    Set rsUnit = New ADODB.Recordset
+40    rsUnit.Open strSql, strConn, adOpenKeyset, adLockOptimistic, adCmdText
+50    iUnit = rsUnit.RecordCount
+60    If iUnit = 0 Then
+         'not found, need to add
+70       rsUnit.AddNew
+80       rsUnit!ColName = strColName
+90       rsUnit!Unit = strUnit
+100      rsUnit.Update
+110   Else
+         'found, continue
+120   End If
+      'MsgBox iModel
+130   GetUnitId = rsUnit!UnitId
+140   rsUnit.Close
+150   Set rsUnit = Nothing
+
+
+Exit_GetUnitId:
+160       Exit Function
+
+Err_GetUnitId:
+      '    MsgBox Err.Description
+170       Call GlobalErrorHandler("mdlPvUpload", "GetUnitId", "Function")
+
+180       Resume Exit_GetUnitId
+          
+End Function

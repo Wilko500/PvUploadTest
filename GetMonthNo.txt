@@ -1,0 +1,29 @@
+Public Function GetMonthNo(strDate As String) As Integer
+      '---------------------------------------------------------------------------------------
+      ' Procedure : GetMonthNo
+      ' Author    : Richard Wilkinson
+      ' Date      : 04/12/2015
+      ' Purpose   :
+      '---------------------------------------------------------------------------------------
+      '
+      Dim iResult As Integer
+
+
+10    On Error GoTo GetMonthNo_Error
+
+20    iResult = CInt(Mid$(strDate, 6, 2))
+
+30    GetMonthNo = iResult
+
+40    On Error GoTo 0
+50    Exit Function
+
+GetMonthNo_Error:
+      ' Call global reporting procedure
+60    Call GlobalErrorHandler("mdlPvUpload", "GetMonthNo", "Function")
+
+      ' Try to continue
+70    Resume Next
+
+End Function
+

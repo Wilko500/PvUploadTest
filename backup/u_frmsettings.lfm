@@ -1,0 +1,1085 @@
+object frmSettings: TfrmSettings
+  Left = 280
+  Height = 399
+  Top = 250
+  Width = 621
+  BorderStyle = bsSingle
+  ClientHeight = 399
+  ClientWidth = 621
+  OnActivate = FormActivate
+  OnCreate = FormCreate
+  OnShow = FormShow
+  Position = poOwnerFormCenter
+  object PageControl1: TPageControl
+    Left = 24
+    Height = 325
+    Top = 35
+    Width = 576
+    ActivePage = TabPaths
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -12
+    Font.Name = 'Tahoma'
+    ParentFont = False
+    TabIndex = 0
+    TabOrder = 0
+    object TabPaths: TTabSheet
+      Caption = 'Paths'
+      ClientHeight = 289
+      ClientWidth = 570
+      Font.CharSet = ANSI_CHARSET
+      Font.Height = -13
+      Font.Name = '.SF NS'
+      ParentFont = False
+      object txtCurlPath: TEdit
+        Left = 140
+        Height = 28
+        Top = 51
+        Width = 400
+        AutoSize = False
+        Enabled = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 0
+      end
+      object Label2: TLabel
+        Left = 45
+        Height = 18
+        Top = 22
+        Width = 89
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'App Path :'
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        ParentFont = False
+      end
+      object Label3: TLabel
+        Left = 45
+        Height = 18
+        Top = 57
+        Width = 89
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'Curl Path :'
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -12
+        Font.Name = '.SF NS'
+        ParentFont = False
+      end
+      object Label4: TLabel
+        Left = 49
+        Height = 18
+        Top = 94
+        Width = 85
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'Log File Path :'
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -12
+        Font.Name = '.SF NS'
+        ParentFont = False
+      end
+      object txtLogFilePath: TEdit
+        Left = 140
+        Height = 28
+        Top = 86
+        Width = 400
+        AutoSize = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 1
+        OnClick = txtLogFilePathClick
+        OnEditingDone = txtLogFilePathEditingDone
+      end
+      object Label5: TLabel
+        Left = 45
+        Height = 18
+        Top = 127
+        Width = 89
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'Temp Path :'
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -12
+        Font.Name = '.SF NS'
+        ParentFont = False
+      end
+      object txtTempPath: TEdit
+        Left = 140
+        Height = 28
+        Top = 121
+        Width = 400
+        AutoSize = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 2
+        OnClick = txtTempPathClick
+        OnEditingDone = txtTempPathEditingDone
+      end
+      object Label6: TLabel
+        Left = 45
+        Height = 18
+        Top = 162
+        Width = 89
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'Archive Path :'
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -12
+        Font.Name = '.SF NS'
+        ParentFont = False
+      end
+      object txtArchivePath: TEdit
+        Left = 140
+        Height = 28
+        Top = 156
+        Width = 400
+        AutoSize = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 3
+        OnEditingDone = txtArchivePathEditingDone
+      end
+      object Label7: TLabel
+        Left = 29
+        Height = 18
+        Top = 197
+        Width = 105
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'DataBase Path :'
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -12
+        Font.Name = '.SF NS'
+        ParentFont = False
+      end
+      object txtDataBasePath: TEdit
+        Left = 140
+        Height = 28
+        Top = 191
+        Width = 400
+        AutoSize = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 4
+        OnClick = txtDataBasePathClick
+        OnEditingDone = txtDataBasePathEditingDone
+      end
+      object txtDebugLogFilePath: TEdit
+        Left = 140
+        Height = 28
+        Top = 226
+        Width = 400
+        AutoSize = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 5
+        OnClick = txtDebugLogFilePathClick
+        OnEditingDone = txtDebugLogFilePathEditingDone
+      end
+      object Label8: TLabel
+        Left = 8
+        Height = 18
+        Top = 232
+        Width = 126
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'Debug Log File Path :'
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        ParentFont = False
+      end
+      object txtApplicationPath: TEdit
+        Left = 140
+        Height = 28
+        Top = 16
+        Width = 400
+        AutoSize = False
+        Enabled = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 6
+      end
+      object cmdGetPath: TButton
+        Left = 140
+        Height = 25
+        Top = 258
+        Width = 75
+        Caption = 'Get Path'
+        Enabled = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 7
+        OnClick = cmdGetPathClick
+      end
+    end
+    object TabTimers: TTabSheet
+      Caption = 'Timers'
+      ClientHeight = 289
+      ClientWidth = 570
+      Font.CharSet = ANSI_CHARSET
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      OnContextPopup = TabTimersContextPopup
+      ParentFont = False
+      object txtPvFileScan: TEdit
+        Left = 248
+        Height = 28
+        Top = 56
+        Width = 70
+        Alignment = taRightJustify
+        AutoSize = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 0
+        OnChange = txtPvFileScanChange
+        OnEditingDone = txtPvFileScanEditingDone
+        OnExit = txtPvFileScanExit
+      end
+      object txtPvUploadStartDelay: TEdit
+        Left = 248
+        Height = 28
+        Top = 88
+        Width = 70
+        Alignment = taRightJustify
+        AutoSize = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 1
+        OnClick = txtPvUploadStartDelayClick
+        OnEditingDone = txtPvUploadStartDelayEditingDone
+      end
+      object txtPvUploadInt: TEdit
+        Left = 248
+        Height = 28
+        Top = 119
+        Width = 70
+        Alignment = taRightJustify
+        AutoSize = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 2
+        OnEditingDone = txtPvUploadIntEditingDone
+      end
+      object txtPvUploadSlotCheck: TEdit
+        Left = 248
+        Height = 28
+        Top = 151
+        Width = 70
+        Alignment = taRightJustify
+        AutoSize = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 3
+        OnEditingDone = txtPvUploadSlotCheckEditingDone
+      end
+      object txtNextPvSlotCheck: TEdit
+        Left = 248
+        Height = 28
+        Top = 219
+        Width = 70
+        Alignment = taRightJustify
+        AutoSize = False
+        Enabled = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 4
+      end
+      object Label9: TLabel
+        Left = 40
+        Height = 18
+        Top = 64
+        Width = 200
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'PV File Scan :'
+      end
+      object Label10: TLabel
+        Left = 40
+        Height = 18
+        Top = 95
+        Width = 200
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'PV Upload Start Delay :'
+      end
+      object Label11: TLabel
+        Left = 40
+        Height = 18
+        Top = 126
+        Width = 200
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'PV Upload :'
+      end
+      object Label12: TLabel
+        Left = 40
+        Height = 18
+        Top = 158
+        Width = 200
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'PV Upload Slot Check :'
+      end
+      object Label13: TLabel
+        Left = 40
+        Height = 18
+        Top = 226
+        Width = 200
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'Next PV Slot Check in :'
+      end
+      object Label14: TLabel
+        Left = 96
+        Height = 16
+        Top = 16
+        Width = 393
+        Caption = 'Timer Delays set in milliseconds (Select Field ot TAB between Fields)'
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+      end
+      object lblFileScanHms: TLabel
+        Left = 325
+        Height = 14
+        Top = 63
+        Width = 70
+        AutoSize = False
+        Caption = '05:00 m:s'
+      end
+      object lblPvUploadStartDelay: TLabel
+        Left = 325
+        Height = 14
+        Top = 95
+        Width = 70
+        AutoSize = False
+        Caption = '02:00 m:s'
+      end
+      object lblPvUploadHms: TLabel
+        Left = 325
+        Height = 14
+        Top = 126
+        Width = 70
+        AutoSize = False
+        Caption = '05:00 m:s'
+      end
+      object lblPvUploadSlotCheck: TLabel
+        Left = 325
+        Height = 14
+        Top = 158
+        Width = 70
+        AutoSize = False
+        Caption = '05:00 m:s'
+      end
+      object lblNextPvSlotCheckHms: TLabel
+        Left = 325
+        Height = 14
+        Top = 226
+        Width = 70
+        AutoSize = False
+        Caption = 'h:m:s'
+      end
+      object Label20: TLabel
+        Left = 40
+        Height = 18
+        Top = 192
+        Width = 200
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'PvErrorLogCheck :'
+      end
+      object txtPvErrorLogCheck: TEdit
+        Left = 248
+        Height = 28
+        Top = 185
+        Width = 70
+        Alignment = taRightJustify
+        AutoSize = False
+        TabOrder = 5
+        OnEditingDone = txtPvErrorLogCheckEditingDone
+      end
+      object lblPvErrorLogCheck: TLabel
+        Left = 325
+        Height = 14
+        Top = 192
+        Width = 70
+        AutoSize = False
+        Caption = '05:00 m:s'
+      end
+    end
+    object TabSheet3: TTabSheet
+      Caption = 'PV System'
+      ClientHeight = 289
+      ClientWidth = 570
+      object lblPvSystemTab: TLabel
+        Left = 56
+        Height = 40
+        Top = 8
+        Width = 464
+        AutoSize = False
+        Caption = 'These parametersare required for uploading PV data to PvOutput.org and for managing the application.  You will need to sign on and create an account'
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+      end
+      object Label15: TLabel
+        Left = 16
+        Height = 18
+        Top = 60
+        Width = 110
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'PV Api Key :'
+      end
+      object txtPvApiKey: TEdit
+        Left = 130
+        Height = 28
+        Top = 53
+        Width = 344
+        AutoSize = False
+        TabOrder = 0
+      end
+      object Label16: TLabel
+        Left = 16
+        Height = 18
+        Top = 96
+        Width = 110
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'PV System ID :'
+      end
+      object txtPvSystemID: TEdit
+        Left = 130
+        Height = 28
+        Top = 88
+        Width = 344
+        AutoSize = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 1
+      end
+      object Label17: TLabel
+        Left = 16
+        Height = 18
+        Top = 130
+        Width = 110
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'PV System Info :'
+      end
+      object txtPvSystemName: TEdit
+        Left = 130
+        Height = 28
+        Top = 123
+        Width = 120
+        AutoSize = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 2
+      end
+      object txtPvInvModel: TEdit
+        Left = 256
+        Height = 28
+        Top = 123
+        Width = 132
+        AutoSize = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 3
+      end
+      object txtPvSystemDate: TEdit
+        Left = 394
+        Height = 28
+        Top = 123
+        Width = 80
+        AutoSize = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 4
+      end
+      object cmdClear: TButton
+        Left = 340
+        Height = 25
+        Top = 176
+        Width = 136
+        Caption = 'Clear'
+        Enabled = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 5
+      end
+      object cmdVireEdit: TButton
+        Left = 340
+        Height = 25
+        Top = 208
+        Width = 136
+        Caption = 'View/Edit Debug File'
+        Enabled = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 6
+      end
+      object txtZoomLevel: TEdit
+        Left = 130
+        Height = 28
+        Top = 176
+        Width = 45
+        Alignment = taRightJustify
+        AutoSize = False
+        Enabled = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 7
+      end
+      object txtMaxDebugRecs: TEdit
+        Left = 130
+        Height = 28
+        Top = 211
+        Width = 45
+        Alignment = taRightJustify
+        AutoSize = False
+        Enabled = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 8
+      end
+      object txtDebugRecs: TEdit
+        Left = 130
+        Height = 28
+        Top = 246
+        Width = 45
+        Alignment = taRightJustify
+        AutoSize = False
+        Enabled = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 9
+      end
+      object Label18: TLabel
+        Left = 16
+        Height = 14
+        Top = 181
+        Width = 110
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'Zoom Level :'
+      end
+      object Label19: TLabel
+        Left = 16
+        Height = 18
+        Top = 216
+        Width = 110
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'Max Debug Recs :'
+      end
+      object Label21: TLabel
+        Left = 16
+        Height = 18
+        Top = 251
+        Width = 110
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'Debug Recs :'
+      end
+      object chkZoomLevelSet: TCheckBox
+        Left = 200
+        Height = 18
+        Top = 181
+        Width = 108
+        Caption = 'Zoom Level Set'
+        Enabled = False
+        TabOrder = 10
+      end
+      object chkDebugModeOn: TCheckBox
+        Left = 200
+        Height = 18
+        Top = 216
+        Width = 112
+        Caption = 'Debug Mode On'
+        Enabled = False
+        TabOrder = 11
+      end
+      object Bevel1: TBevel
+        Left = 0
+        Height = 6
+        Top = 162
+        Width = 576
+        Shape = bsBottomLine
+      end
+    end
+    object TabSheet4: TTabSheet
+      Caption = 'Processing'
+      ClientHeight = 289
+      ClientWidth = 570
+      object RichMemo1: TRichMemo
+        Left = 470
+        Height = 50
+        Top = 30
+        Width = 100
+        HideSelection = False
+        Lines.Strings = (
+          'RichMemo1'
+        )
+        TabOrder = 0
+        ZoomFactor = 1
+      end
+      object Button1: TButton
+        Left = 488
+        Height = 25
+        Top = 0
+        Width = 75
+        Caption = 'Button1'
+        TabOrder = 1
+        OnClick = Button1Click
+      end
+      object lblProcessing: TLabel
+        Left = 108
+        Height = 70
+        Top = 25
+        Width = 345
+        AutoSize = False
+        Caption = 'lblProcessing'
+      end
+      object chkFileScan: TCheckBox
+        Left = 100
+        Height = 18
+        Top = 120
+        Width = 400
+        AutoSize = False
+        Caption = 'FileScan - Check for available log file'
+        TabOrder = 2
+      end
+      object chkFileParse: TCheckBox
+        Left = 100
+        Height = 18
+        Top = 148
+        Width = 400
+        AutoSize = False
+        Caption = 'FileParse - into temp files'
+        TabOrder = 3
+      end
+      object chkDataBaseUpdate: TCheckBox
+        Left = 100
+        Height = 18
+        Top = 176
+        Width = 400
+        AutoSize = False
+        Caption = 'DataBase Update -Write parsed temp files into DataBase'
+        TabOrder = 4
+      end
+      object chkPvUpload: TCheckBox
+        Left = 100
+        Height = 18
+        Top = 204
+        Width = 400
+        AutoSize = False
+        Caption = 'PV Upload - available data to PvOutput.org'
+        TabOrder = 5
+      end
+    end
+    object TabSheet5: TTabSheet
+      Caption = 'Validation'
+      ClientHeight = 289
+      ClientWidth = 570
+      object lblValidation: TLabel
+        Left = 100
+        Height = 50
+        Top = 16
+        Width = 375
+        AutoSize = False
+      end
+      object Label30: TLabel
+        Left = 100
+        Height = 18
+        Top = 75
+        Width = 375
+        AutoSize = False
+        Caption = 'Arrays of Values:  One for each month Jan -- Dec'
+      end
+      object txtEarliestTimes: TEdit
+        Left = 45
+        Height = 28
+        Top = 136
+        Width = 463
+        AutoSize = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 0
+      end
+      object txtLatestTimes: TEdit
+        Left = 45
+        Height = 28
+        Top = 192
+        Width = 465
+        AutoSize = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 1
+      end
+      object txtMaxTimes: TEdit
+        Left = 45
+        Height = 28
+        Top = 248
+        Width = 465
+        AutoSize = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 2
+      end
+      object Label31: TLabel
+        Left = 45
+        Height = 18
+        Top = 118
+        Width = 150
+        AutoSize = False
+        Caption = 'Earliest Time Expected'
+      end
+      object Label32: TLabel
+        Left = 45
+        Height = 18
+        Top = 174
+        Width = 150
+        AutoSize = False
+        Caption = 'Latest Time Expected'
+      end
+      object Label33: TLabel
+        Left = 45
+        Height = 18
+        Top = 230
+        Width = 150
+        AutoSize = False
+        Caption = 'Maximum No of Times Expected'
+      end
+    end
+    object TabSheet6: TTabSheet
+      Caption = 'PV Upload'
+      ClientHeight = 289
+      ClientWidth = 570
+      object Label22: TLabel
+        Left = 75
+        Height = 18
+        Top = 15
+        Width = 295
+        AutoSize = False
+        Caption = 'Maximum Output Records (Batch > 14 Days Old) :'
+      end
+      object Label23: TLabel
+        Left = 75
+        Height = 18
+        Top = 50
+        Width = 295
+        AutoSize = False
+        Caption = 'Maximum Status Records (Live <= 14 Days Old) :'
+      end
+      object Label24: TLabel
+        Left = 75
+        Height = 18
+        Top = 85
+        Width = 295
+        AutoSize = False
+        Caption = 'Maximum AddOutput Get Response Retries/Wait ms :'
+      end
+      object Label25: TLabel
+        Left = 75
+        Height = 18
+        Top = 120
+        Width = 295
+        AutoSize = False
+        Caption = 'Maximum AddStatus Get Response Retries/Wait ms :'
+      end
+      object Label26: TLabel
+        Left = 75
+        Height = 18
+        Top = 155
+        Width = 295
+        AutoSize = False
+        Caption = 'Maximum Get Upload Slots Response Retries/Wait ms :'
+      end
+      object txtMaxBatchRecs: TEdit
+        Left = 380
+        Height = 28
+        Top = 8
+        Width = 50
+        Alignment = taRightJustify
+        AutoSize = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 0
+      end
+      object txtMaxLiveRecs: TEdit
+        Left = 380
+        Height = 28
+        Top = 43
+        Width = 50
+        Alignment = taRightJustify
+        AutoSize = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 1
+      end
+      object txtMaxOutputRetries: TEdit
+        Left = 380
+        Height = 28
+        Top = 78
+        Width = 50
+        Alignment = taRightJustify
+        AutoSize = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 2
+      end
+      object txtMaxLiveRetries: TEdit
+        Left = 380
+        Height = 28
+        Top = 113
+        Width = 50
+        Alignment = taRightJustify
+        AutoSize = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 3
+      end
+      object txtMaxUploadSlotRetries: TEdit
+        Left = 380
+        Height = 28
+        Top = 148
+        Width = 50
+        Alignment = taRightJustify
+        AutoSize = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 4
+      end
+      object txtPvGetStatusDelay: TEdit
+        Left = 448
+        Height = 28
+        Top = 113
+        Width = 50
+        Alignment = taRightJustify
+        AutoSize = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 5
+      end
+      object txtPvUploadSlotDelay: TEdit
+        Left = 450
+        Height = 28
+        Top = 148
+        Width = 50
+        Alignment = taRightJustify
+        AutoSize = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 6
+      end
+      object Label27: TLabel
+        Left = 75
+        Height = 18
+        Top = 195
+        Width = 295
+        AutoSize = False
+        Caption = 'PvOutput API Requests Limit (Upload Slot Limit) :'
+      end
+      object Label28: TLabel
+        Left = 75
+        Height = 18
+        Top = 230
+        Width = 295
+        AutoSize = False
+        Caption = 'PvOutput API Requests (Upload Slots) Remaining :'
+      end
+      object Label29: TLabel
+        Left = 75
+        Height = 18
+        Top = 265
+        Width = 295
+        AutoSize = False
+        Caption = 'PV Upload Slot Date/Time Reset :'
+      end
+      object txtPvUploadSlotLimit: TEdit
+        Left = 450
+        Height = 28
+        Top = 188
+        Width = 50
+        Alignment = taRightJustify
+        AutoSize = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 7
+      end
+      object txtPvUploadSlotRemaining: TEdit
+        Left = 450
+        Height = 28
+        Top = 223
+        Width = 50
+        Alignment = taRightJustify
+        AutoSize = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 8
+      end
+      object txtPvUploadSlotTimeReset: TEdit
+        Left = 450
+        Height = 28
+        Top = 258
+        Width = 50
+        Alignment = taRightJustify
+        AutoSize = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 9
+      end
+      object txtPvUploadSlotDateReset: TEdit
+        Left = 340
+        Height = 28
+        Top = 258
+        Width = 85
+        Alignment = taRightJustify
+        AutoSize = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 10
+      end
+      object txtPvGetOutputDelay: TEdit
+        Left = 450
+        Height = 28
+        Top = 78
+        Width = 50
+        Alignment = taRightJustify
+        AutoSize = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        ParentFont = False
+        TabOrder = 11
+      end
+      object Bevel2: TBevel
+        Left = 0
+        Height = 14
+        Top = 170
+        Width = 576
+        Shape = bsBottomLine
+      end
+    end
+  end
+  object cmdSettingsSave: TButton
+    Left = 200
+    Height = 25
+    Top = 360
+    Width = 75
+    Caption = 'Save'
+    Enabled = False
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -13
+    Font.Name = 'Tahoma'
+    ParentFont = False
+    TabOrder = 1
+    OnClick = cmdSettingsSaveClick
+  end
+  object cmdSettingsExit: TButton
+    Left = 320
+    Height = 25
+    Top = 360
+    Width = 75
+    Caption = 'Exit'
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -13
+    Font.Name = 'Tahoma'
+    ParentFont = False
+    TabOrder = 2
+    OnClick = cmdSettingsExitClick
+  end
+  object Label1: TLabel
+    Left = 248
+    Height = 25
+    Top = 4
+    Width = 128
+    Caption = 'Form Settings'
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -21
+    Font.Name = 'Tahoma'
+    ParentFont = False
+  end
+  object SelectDirectoryDialog1: TSelectDirectoryDialog
+    Left = 496
+    Top = 352
+  end
+end

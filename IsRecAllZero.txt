@@ -1,0 +1,39 @@
+Public Function IsRecAllZero(ByRef arData() As String, ByRef iCols As Integer) As Boolean
+      '---------------------------------------------------------------------------------------
+      ' Procedure : IsRecAllZero
+      ' Author    : Richard Wilkinson
+      ' Date      : 17/10/2015
+      ' Purpose   : To determine if the data recoird contains all zeros.
+      '           : This can occurr if the AuroraCommunicator program sufers a
+      '           : power loss eg reboot.
+      '           : Returns True if all zero
+      '---------------------------------------------------------------------------------------
+      '
+      Dim bResult As Boolean
+      Dim i As Integer
+      Dim tmp As String
+10    On Error GoTo IsRecAllZero_Error
+
+20    bResult = True
+30    For i = 4 To iCols
+40        tmp = arData(i)   ' the data element
+50        Select Case tmp
+          Case "0"
+60        Case "0.0"
+70        Case Else
+80        bResult = False
+90        End Select
+100   Next
+
+110   IsRecAllZero = bResult
+
+120   On Error GoTo 0
+130   Exit Function
+
+IsRecAllZero_Error:
+      ' Call global reporting procedure
+140   Call GlobalErrorHandler("mdlPvUpload", "IsRecAllZero", "Function")
+
+      ' Try to continue
+150   Resume Next
+End Function

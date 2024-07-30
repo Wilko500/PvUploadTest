@@ -1,0 +1,30 @@
+Public Function IsSlotFree() As Boolean
+      '---------------------------------------------------------------------------------------
+      ' Procedure : IsSlotFree
+      ' Author    : Richard Wilkinson
+      ' Date      : 22/10/2015
+      ' Purpose   : Check if slots is free for data upload
+      '           : Look up in global gstrPvUploadSlotRemaining
+      '           : return true if yes else false
+      '---------------------------------------------------------------------------------------
+      '
+      Dim bResult As Boolean
+10    On Error GoTo IsSlotFree_Error
+
+20    If gstrPvUploadSlotRemaining > 2 Then
+30        bResult = True
+40    Else
+50        bResult = False
+60    End If
+70    IsSlotFree = bResult
+
+80    On Error GoTo 0
+90    Exit Function
+
+IsSlotFree_Error:
+      ' Call global reporting procedure
+100   Call GlobalErrorHandler("mdlPvUpload", "IsSlotFree", "Function")
+
+      ' Try to continue
+110   Resume Next
+End Function

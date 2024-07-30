@@ -1,0 +1,90 @@
+Function GetResponseAddStatus(iSent As Integer, ByRef strArray() As String) As Boolean
+      '---------------------------------------------------------------------------------------
+      ' Function  : GetResponseAddStatus
+      ' Author    : Richard Wilkinson
+      ' Date      : 23/10/2015
+      ' Purpose   : Get response to attempted AddStatus upload request to PvOutput.org
+      '---------------------------------------------------------------------------------------
+      '
+      ' Response is in file Return.txt
+      ' Make up to three attempts to read file, otherwise log error
+      ' Return results in strArray(3,iSent)
+      ' Function returns true/False for Success/Failure
+      Dim j As Integer, i As Integer, k As Integer, tmp As String
+      Dim strLine As String
+      Dim arLine() As String
+      Dim arReturn() As String
+      '10    GetResponseAddStatus = True   ' Assume good return
+10    GetResponseAddStatus = False   ' Assume bad response
+20    On Error GoTo ErrorCheck
+30    For k = 1 To CInt(gstrMaxLiveRetries)
+      '   Short delasy waiting for file
+40        Sleep (CSng(gstrPvGetStatusDelay))
+50        Open gstrTempPath & "\Return.txt" For Input As #1
+60        Line Input #1, strLine
+70             Print #99, Format(Now(), "yyyy-mm-dd hh:mm") & "|" & strLine & "|"
+      '   Check for errors
+80        If InStr(strLine, "Date is older than 14 days") Then
+90            Call SendToRtfBox(frmAuroraDataUpload.rtfPvUploadError, Format(Time$, "hh:mm") & " - Date > 14 days", True)
+      '        Call SendToRtfBox(frmAuroraDataUpload.rtfPvUploadError, Format(Time$, "hh:mm") & " - PvUpload turned off", True)
+      '       Turn off PvUpload and continue
+100           GetResponseAddStatus = False
+110           Exit Function
+120       ElseIf InStr(strLine, "Forbidden 403: Exceeded 60 requests") Then
+130           Call SendToRtfBox(frmAuroraDataUpload.rtfPvUploadError, Format(Time$, "hh:mm") & " - Request limit exceeded", True)
+140           GetResponseAddStatus = False
+150           Exit Function
+160       End If
+          
+      '   decode single line input into array of status's of form "date,time,status"
+      '
+      '   Need better testing in case return is partial
+      '
+      '
+170       arReturn = Split(strLine, ";")
+      '   iCount responses expected
+      '    If UBound(arReturn) = iSent - 1 Then
+180       If arReturn(iSent - 1) <> "" Then
+      '       Good response, decode
+190           Close #1
+200           Kill gstrTempPath & "\Return.txt"
+210           For j = 1 To iSent
+      '           decode each array element into separate fields
+220               arLine = Split(arReturn(j - 1), ",")
+230               strArray(1, j) = Mid$(arLine(0), 7, 2) & "/" & Mid$(arLine(0), 5, 2) & "/" & Left$(arLine(0), 4)
+240               strArray(2, j) = arLine(1)
+250               strArray(3, j) = arLine(2)
+260           Next j
+270           GetResponseAddStatus = True
+280           Exit Function
+290       Else
+      '       Bad response log and continue
+300           Call SendToRtfBox(frmAuroraDataUpload.rtfPvUploadError, Format(Time$, "hh:mm") & " - " & Format((Now), "yyyy-mm-dd") & " - " & k & " No response from PvOutput.org", True)
+310           GetResponseAddStatus = False
+320       End If
+ErrorContinue:
+330   Next
+
+340   Exit Function
+ErrorCheck:
+350   If Err.Number = 53 Then
+      '   File not found, wait & try again
+360       Call SendToRtfBox(frmAuroraDataUpload.rtfPvUploadError, Format(Time$, "hh:mm") & " - " & Format((Now), "yyyy-mm-dd") & " - " & k & " Return file not ready", True)
+370       Close #1   ' just in case
+380       Resume ErrorContinue
+390   ElseIf Err.Number = 62 Then
+      '   Input past end, file there but not ready
+400       Call SendToRtfBox(frmAuroraDataUpload.rtfPvUploadError, Format(Time$, "hh:mm") & " - " & Format((Now), "yyyy-mm-dd") & " - " & k & " Return file not complete", True)
+410       Close #1   ' just in case
+420       Resume ErrorContinue
+430   Else
+      '   Unexpected error, log
+      '    Call SendToRtfBox(frmAuroraDataUpload.rtfPvUploadError, Format(Time$, "hh:mm") & " - " & Format((Now), "yyyy-mm-dd") & " - " & Err.Number, True)
+440       Call GlobalErrorHandler("mdlPvUpload", "GetResponseAddStatus", "Function")
+
+450       Close #1
+460       GetResponseAddStatus = False
+470   End If
+
+End Function
+

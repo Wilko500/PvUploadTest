@@ -1,0 +1,45 @@
+Public Sub LoadTimesStr(arStrTimes() As String, strArrayOfTimes As String, strType As String)
+      '---------------------------------------------------------------------------------------
+      ' Procedure : LoadTimesStr
+      ' Author    : Richard Wilkinson
+      ' Date      : 04/12/2015
+      ' Purpose   : Load string of times from ini file into array of individual string times
+      '---------------------------------------------------------------------------------------
+      '
+      Dim arTemp() As String
+      Dim i As Integer
+      Dim strTimeAssumed As String
+
+10    On Error GoTo LoadTimesStr_Error
+
+20    On Error GoTo LoadTimesStr_Error
+30    If strType = "E" Then strTimeAssumed = "08:00"
+40    If strType = "L" Then strTimeAssumed = "16:00"
+50    arTemp = Split(strArrayOfTimes, ";")
+60    If UBound(arTemp) <> 11 Then
+      '   Not enough values, default time assumed
+      '   Write error to log
+70    Call SendToRtfBox(frmAuroraDataUpload.rtfFileScanError, Format(Time$, "hh:mm") & " - " & Format(Now(), "yyyy-mm-dd") & " - Not enough time values", True)
+
+80    For i = 0 To 11
+90        arStrTimes(i + 1) = strTimeAssumed
+100   Next
+110   Else
+120   For i = 0 To 11
+130       arStrTimes(i + 1) = arTemp(i)
+140   Next
+150   End If
+
+160   On Error GoTo 0
+170   Exit Sub
+
+LoadTimesStr_Error:
+      ' Call global reporting procedure
+180   Call GlobalErrorHandler("mdlPvUpload", "LoadTimesStr", "Sub")
+
+      ' Try to continue
+190   Resume Next
+
+200   On Error GoTo 0
+210   Exit Sub
+End Sub

@@ -1,0 +1,44 @@
+Public Sub ReadInFile(strDate As String, strSystemName As String, strSystemDate As String)
+      ' Function to read information file, yyyy-mm-dd-IN.dat file
+      Dim strLine As String
+      Dim strPath As String
+
+      Dim i, j As Integer
+10    On Error GoTo ReadInFile_Error
+
+20    strPath = gstrTempPath
+
+30    Open strPath & "\" & strDate & "-IN.dat" For Input As #1
+40    Line Input #1, strLine
+50    i = Len(strLine)
+60    j = InStr(strLine, ":")
+70    If i - j > 1 Then
+      '   ok to get SystemName
+80        strSystemName = Mid$(strLine, j + 2, i - j + 1)
+90    Else
+      '   SystemName not provided
+100       strSystemName = "Not Provided"
+110   End If
+      '     And system date
+120   Line Input #1, strLine
+130   i = Len(strLine)
+140   j = InStr(strLine, ":")
+150    If i - j > 1 Then
+      '   ok to get system date
+160       strSystemDate = Mid$(strLine, j + 2, i - j + 1)
+170   Else
+      '   SystemName not provided
+180       strSystemDate = "Not Provided"
+190   End If
+200   Close #1
+
+210   On Error GoTo 0
+220   Exit Sub
+
+ReadInFile_Error:
+      ' Call global reporting procedure
+230   Call GlobalErrorHandler("mdlPvUpload", "ReadInFile", "Sub")
+
+      ' Try to continue
+240   Resume Next
+End Sub

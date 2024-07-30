@@ -1,0 +1,47 @@
+Public Sub ResetUpdateSlots(intChange As Integer)
+      '---------------------------------------------------------------------------------------
+      ' Procedure : ResetUpdateSlots
+      ' Author    : Richard Wilkinson
+      ' Date      : 10/10/2015
+      ' Purpose   : To reset UploadSlots to max value on the hour
+      '---------------------------------------------------------------------------------------
+      ' if intChange = 0 then reset to max value
+      ' if intChange <0 then decrement slot count
+      '
+      Dim strTmp As String
+      Dim strResetTime As String
+10    On Error GoTo ResetUpdateSlots_Error
+
+20    strResetTime = Format(DateAdd("h", 1, gdatePvUploadSlotTimeReset), "hh") & ":00"
+30    If intChange = 0 Then
+      '   Reset slot count to max value and reset time to current hour
+      '   Reset to max value
+40        gstrPvUploadSlotRemaining = gstrPvUploadSlotLimit
+50        frmSettings.txtPvUploadSlotRemaining = gstrPvUploadSlotLimit
+60        WriteIniValue App.path & "\PvUpload.ini", "PvUpload", "PvUploadSlotRemaining", gstrPvUploadSlotLimit
+      '   And then reset time
+70        WriteIniValue App.path & "\PvUpload.ini", "PvUpload", "PvUploadSlotTimeReset", strResetTime
+80        gdatePvUploadSlotTimeReset = CDate(strResetTime)
+90        frmSettings.txtPvUploadSlotTimeReset = strResetTime
+
+100       Call SendToRtfBox(frmAuroraDataUpload.rtfPvUploadLog, Format(Time$, "hh:mm") & " on " & Format(Now(), "yyyy-mm-dd") & " - Slot count/time reset", True)
+110   ElseIf intChange < 0 Then
+      '   Decrement slot count
+120       strTmp = LTrim(Str$(CInt(gstrPvUploadSlotRemaining) + intChange))
+130       gstrPvUploadSlotRemaining = strTmp
+140       frmSettings.txtPvUploadSlotRemaining = strTmp
+150       WriteIniValue App.path & "\PvUpload.ini", "PvUpload", "PvUploadSlotRemaining", strTmp
+160   Else
+      '   Unexpected value do nothing
+170   End If
+
+180   On Error GoTo 0
+190   Exit Sub
+
+ResetUpdateSlots_Error:
+      ' Call global reporting procedure
+200   Call GlobalErrorHandler("mdlPvUpload", "ResetUpdateSlots", "Sub")
+
+      ' Try to continue
+210   Resume Next
+End Sub

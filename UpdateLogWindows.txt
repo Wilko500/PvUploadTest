@@ -1,0 +1,76 @@
+Public Sub UpdateLogWindows()
+      '---------------------------------------------------------------------------------------
+      ' Procedure : UpdateLogWindows
+      ' Author    : Richard Wilkinson
+      ' Date      : 15/11/2015
+      ' Purpose   : This procedure updates the DaysLogged and DaysUploaded Log Windows.
+      '           : Data is retrieved from the database at the end of DataBaseUpdate
+      '---------------------------------------------------------------------------------------
+      '
+      Dim strDbFullPath As String
+      Dim strConn As String
+      Dim rs As ADODB.Recordset
+      Dim strSql As String
+      Dim i, j As Integer
+      Dim XX As Long
+      Dim YY As Long
+
+10    On Error GoTo UpdateLogWindows_Error
+
+20    XX = frmAuroraDataUpload.hWnd  ' Disable refresh/update for whole form, maybe at startup form multiple updates
+
+      'XX = lstLoggedDays.hWnd  ' Get handle for rtfBox
+30    YY = LockWindowUpdate(XX)  ' Disable update/Refresh
+40    strDbFullPath = gstrDatabasePath & "\" & "PvDataBase.mdb"
+50    strConn = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" & strDbFullPath & ";User Id=admin;Password=;"
+      ' First DaysLogged
+
+60    strSql = "SELECT TOP 50 Days.DATE, Days.COMPLETE " & _
+               "From Days ORDER BY Days.DATE DESC;"
+70    Set rs = New ADODB.Recordset
+80    rs.Open strSql, strConn, adOpenKeyset, adLockOptimistic, adCmdText
+90    i = rs.RecordCount
+100   If i > 0 Then
+      '   Records to process
+110       frmAuroraDataUpload.lstLoggedDays.Clear
+120       rs.MoveFirst
+130       For j = 1 To i
+140           frmAuroraDataUpload.lstLoggedDays.AddItem rs![Date] & " " & rs![Complete]
+150           rs.MoveNext
+160       Next
+170       rs.Close
+180       Set rs = Nothing
+190      Else
+      '      No records
+200      End If
+         
+      ' And then DaysUploaded
+         
+210   strSql = "SELECT TOP 50 Days.DATE, Days.UPLOADED " & _
+               "From Days ORDER BY Days.DATE DESC;"
+220   Set rs = New ADODB.Recordset
+230   rs.Open strSql, strConn, adOpenKeyset, adLockOptimistic, adCmdText
+240   i = rs.RecordCount
+250   If i > 0 Then
+      '   Records to process
+260       frmAuroraDataUpload.lstUploadDays.Clear
+270       rs.MoveFirst
+280       For j = 1 To i
+290           frmAuroraDataUpload.lstUploadDays.AddItem rs![Date] & " " & rs![UPLOADED]
+300           rs.MoveNext
+310       Next
+320       rs.Close
+330       Set rs = Nothing
+340   Else
+      '   No records
+350   End If
+
+360   YY = LockWindowUpdate(0)   ' Reset rtfBox update/refresh
+370   On Error GoTo 0
+380   Exit Sub
+UpdateLogWindows_Error:
+      ' Call global reporting procedure
+390   Call GlobalErrorHandler("mdlPvUpload", "UpdateLogWindows", "Sub")
+      ' Try to continue
+400   Resume Next
+End Sub

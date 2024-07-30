@@ -1,0 +1,81 @@
+Public Function IsDataComplete(strDate As String, iSysS As Integer, iData As Integer, strSect As String, strFirstTime As String, strLastTime As String) As String
+      ' Checking data file to make assesment of the data completeness
+      ' Returns "Y"   ....data is complete
+      '         "N"   ....data is partial
+      '
+      'Uses globals gstrEarliestTime, gstrLatestTime, gintMaxTimes
+      '
+      'Assumption is that data is complete if iSysS=5 and strSect="SysS"
+      '
+      Dim strDataState As String
+      'lookup values for use in this routine
+10    gstrEarliestTime = argStrEarliestTimes(GetMonthNo(strDate))
+20    gstrLatestTime = argStrLatestTimes(GetMonthNo(strDate))
+30    gintMaxTimes = argIntMaxTimes(GetMonthNo(strDate))
+40    On Error GoTo IsDataComplete_Error
+
+50    strDataState = "Y"
+60    If iSysS = 5 And strSect = "SysS" Then   'First end state
+      '   Assumption true so far
+      '    strDataState = "Y"
+70        If iData >= gintMaxTimes Then
+      '       still ok
+      '        If strFirstTime <= gstrEarliestTime Or strLastTime >= gstrLatestTime Then
+80             If DateDiff("n", CDate(strFirstTime), CDate(gstrEarliestTime)) >= 0 And _
+                DateDiff("n", CDate(strLastTime), CDate(gstrLatestTime)) <= 0 Then
+      '           Still ok
+      '            strDataState = "Y"
+90            Else
+100               strDataState = "N"
+110               Print #99, strDate & " - fail at start time:F/E: " & strFirstTime & "/" & gstrEarliestTime
+120               Print #99, strDate & " - fail at end time:L/L: " & strLastTime & "/" & gstrLatestTime
+130           End If
+140       Else
+150           strDataState = "N"
+160           Print #99, strDate & " - fail at number of times:Actual/Max " & iData & "/" & gintMaxTimes
+170       End If
+180   ElseIf iSysS = 0 Then
+      '   System section missing
+190       strDataState = "N"
+200       Print #99, strDate & " - fail at System section missing"
+210   End If
+      '
+      'Alternate end state, typically after power cut or program restart. EOF is at section "data"
+      '
+220   If strSect = "Data" Then
+      '   Maybe partial
+230       If iSysS = 5 Then
+      '       Still ok
+240           strDataState = "Y"
+250           If iData >= gintMaxTimes Then
+      '           still ok
+260               strDataState = "Y"
+      '           Need to recode the following line +++++++++++++++++++++++++++++++++++++++++++++++++++
+270               If strFirstTime <= gstrEarliestTime Or strLastTime >= gstrLatestTime Then
+      '               Still ok
+280                   strDataState = "Y"
+290               Else
+300                   strDataState = "N"
+310               End If
+320           Else
+330               strDataState = "N"
+340           End If
+350       Else
+360           strDataState = "N"
+370       End If
+380   Else
+      '    strDataState = "N"
+390   End If
+
+400   IsDataComplete = strDataState
+
+410   On Error GoTo 0
+420   Exit Function
+
+IsDataComplete_Error:
+      ' Call global reporting procedure
+430   Call GlobalErrorHandler("mdlPvUpload", "IsDataComplete", "Function")
+
+      ' Try to continue
+440   Resume Next
+End Function

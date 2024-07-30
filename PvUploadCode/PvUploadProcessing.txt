@@ -1,0 +1,145 @@
+Public Sub PvUploadProcessing()
+      '---------------------------------------------------------------------------------------
+      ' Procedure : PvUploadProcessing
+      ' Author    : Richard
+      ' Date      : 03/10/2015
+      ' Purpose   : Handle all necessary processes to query if data is ready for upload,
+      '             to upload, to handle return code and update database
+      '---------------------------------------------------------------------------------------
+      '
+      'Check for UploadSlot availability
+      Dim rs As Recordset
+      Dim strConn As String
+      Dim strSQLStatus As String
+      Dim strCurlStatus As String
+      Dim strDbFullPath As String
+      Dim strData As String
+      Dim iCount As Integer, i As Integer
+10    On Error GoTo PvUploadProcessing_Error
+
+20    strDbFullPath = gstrDatabasePath & "\" & "PvDataBase.mdb"
+30    strConn = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" & strDbFullPath & ";User Id=admin;Password=;"
+
+      'strSQL = "Select * from DAYS where [Date]=#" & strDate & "#;"
+
+40    strSQLStatus = "SELECT TOP " & gstrMaxLiveRecs & " Days.DATE, Times.TIME, Times.UPLOADED, Times.PAC, Times.ENERGY" & _
+             " FROM Days INNER JOIN Times ON Days.DAYID = Times.DAYID" & _
+             " Where (((Times.UPLOADED) = ""N"") And ((Now() - [Date]) < 13))" & _
+             " ORDER BY Days.DATE, Times.TIME;"
+
+
+      ' First check if there are update slots available
+      '
+50    If Not IsSlotFree Then
+60        Exit Sub
+70    End If
+80    Set rs = New ADODB.Recordset
+90    rs.Open strSQLStatus, strConn, adOpenKeyset, adLockOptimistic, adCmdText
+100   iCount = rs.RecordCount
+110   strData = ""
+120   If iCount = 0 Then
+      '   No records to process exit
+130       Exit Sub
+140   End If
+150   For i = 1 To iCount
+      '   Debug.Print rs!Date, rs!Time, rs!uploaded, rs!PAC, rs!energy
+160       strData = strData & Format(rs!Date, "yyyymmdd") & "," & Format(rs!Time, "hh:mm") & "," & rs!energy & "," & rs!PAC
+170       If i < iCount Then strData = strData & ";"
+180       rs.MoveNext
+190   Next
+
+
+200   strCurlStatus = Chr$(34) & gstrCurlPath & "\Curl.exe" & Chr$(34) & " -d " & """data=" & strData & """" & _
+                                  " -H " & """X-Pvoutput-Apikey: " & gstrApiKey & """" & _
+                                  " -H " & """X-Pvoutput-SystemId: " & gstrSystemId & """" & _
+                                  " http://pvoutput.org/service/r2/addbatchstatus.jsp" & _
+                                  " -o """ & gstrTempPath & "\" & "Return.txt"""
+                              
+      ' This fix (running from batch file) is to overcome a problem with file direction
+210   Open gstrTempPath & "\Z.bat" For Output As #2
+220   Print #2, strCurlStatus
+230   Close #2
+      ' Make sure no old Return.txt exists  tacky code but will be ok for now
+240   If Not Dir(gstrTempPath & "\Return.txt") = "" Then
+          'file exists so delete it
+250       Kill gstrTempPath & "\Return.txt"
+260   End If
+270   Call ResetUpdateSlots(-1)   'decrement slot count
+      'Shell strCommandRate, 0    ' Redirection does not work like this.
+280   Shell gstrTempPath & "\Z.bat", 0
+      Dim strArray() As String
+      Dim j As Integer
+      Dim strTempDate As String
+      Dim iUp As Integer, iNotUp As Integer
+290   ReDim strArray(1 To 3, 1 To iCount)
+300   If Not GetResponseAddStatus(iCount, strArray()) Then
+      '   Bad response nothing to process
+      '   Call SendToRtfBox(frmAuroraDataUpload.rtfPvUploadLog, Format(Time$, "hh:mm") & " - Bad or missing response", True)
+      '310       Call SendToRtfBox(frmAuroraDataUpload.rtfPvUploadError, Format(Time$, "hh:mm") & " - " & Format(CDate(strArray(1, iCount)), "yyyy-mm-dd") & " - Bad or missing response", True)
+310       Call SendToRtfBox(frmAuroraDataUpload.rtfPvUploadError, Format(Time$, "hh:mm") & " - " & Left$(strData, 20) & " . . . " & " - Bad or missing response", True)
+
+320       Exit Sub
+330   End If
+
+340   Debug.Print strArray(1, 1), strArray(2, 1), strArray(3, 1)
+      'Debug.Print strArray(1, 2), strArray(2, 2), strArray(3, 2)
+350   Debug.Print strArray(1, iCount), strArray(2, iCount), strArray(3, iCount)
+
+      ' Update database
+360   rs.MoveFirst   ' Back to beginning of recordset
+370   iUp = 0
+380   iNotUp = 0
+390   For j = 1 To iCount
+
+400   Print #99, "j=|" & j & "|" & "iCount=|" & iCount & "|"
+410   Print #99, "strArray(1, j)=|" & strArray(1, j) & "|" & "strArray(2, j)=|" & strArray(2, j) & "|"
+
+420       If rs!Date = CDate(strArray(1, j)) And Format(rs!Time, "hh:mm") = strArray(2, j) Then
+      '       Match so test for update
+430           If strArray(3, j) = "1" Then
+      '           Success
+440               rs!UPLOADED = "Y"
+450               rs.Update
+460               iUp = iUp + 1
+470               Debug.Print "YES", rs!Date, rs!Time
+480           Else
+490               Debug.Print "NO", rs!Date, rs!Time
+500               iNotUp = iNotUp + 1
+510           End If
+520       Else
+530          Call SendToRtfBox(frmAuroraDataUpload.rtfPvUploadError, Format(Time$, "hh:mm") & " - " & Format(CDate(strArray(1, iCount)), "yyyy-mm-dd") & " - " & iUp & "Data mismatch", True)
+
+540       End If
+550       rs.MoveNext
+560   Next
+
+
+570   rs.Close
+580   Set rs = Nothing
+590   If iUp > 0 Then
+600       Call SendToRtfBox(frmAuroraDataUpload.rtfPvUploadLog, Format(Time$, "hh:mm") & " - " & Format(CDate(strArray(1, iCount)), "yyyy-mm-dd") & " - " & iUp & " Record(s) uploaded", True)
+610   End If
+620   If iNotUp > 0 Then
+630       Call SendToRtfBox(frmAuroraDataUpload.rtfPvUploadLog, Format(Time$, "hh:mm") & " - " & Format(CDate(strArray(1, iCount)), "yyyy-mm-dd") & " - " & iUp & " Record(s) Not uploaded", True)
+640   End If
+
+
+      'check and update database
+      'log sucess
+
+      ' If slots available do batch updates first for dates > 14 days old
+      '
+      ' Next check for live data  <= 14 days old
+
+
+650   On Error GoTo 0
+660   Exit Sub
+
+PvUploadProcessing_Error:
+      ' Call global reporting procedure
+670   Call GlobalErrorHandler("mdlPvUpload", "PvUploadProcessing", "Sub")
+
+      ' Try to continue
+680   Resume Next
+
+End Sub

@@ -1,0 +1,50 @@
+Public Function GetDayId(strConn As String, strDate As String, strTimeOn As String, strTimeOff As String, sngEnergyToday As Single, sngEnergyLife As Single, sngUnitId As Long, strComplete As String) As Long
+      'On Error GoTo Err_GetDayId
+      Dim conn As Connection
+      Dim rs As Recordset
+      Dim connstring As String
+      Dim strSql As String
+      Dim iCount As Integer
+      Dim MyDate As Date
+      'MyDate = "2019-02-25"  ' iso format
+10    strSql = "Select * from DAYS where [Date]=#" & strDate & "#;"
+20    Set rs = New ADODB.Recordset
+30    rs.Open strSql, strConn, adOpenKeyset, adLockOptimistic, adCmdText
+40    iCount = rs.RecordCount
+50    If iCount = 0 Then
+60       rs.AddNew
+70       rs!Date = strDate
+80       rs!UPLOADED = "N"
+90       rs!Complete = strComplete
+100      rs!TimeOn = strTimeOn
+110      rs!TimeOff = strTimeOff
+      '   rs!EnergyToday = sngEnergyToday   update this field with peak later
+120      rs!EnergyLife = sngEnergyLife
+130      rs!Units = sngUnitId
+140      rs.Update
+      '   MsgBox "1 record added for " & strDate
+150   ElseIf iCount = 1 Then
+      '   MsgBox "Record " & strDate & " already exists"#
+160      rs.MoveFirst
+170      rs!TimeOn = strTimeOn
+180      rs!TimeOff = strTimeOff
+190      rs!EnergyLife = sngEnergyLife
+200      rs.Update
+210   Else
+      '        Unexpected no of records
+220   End If
+
+230   GetDayId = rs!DayId
+240   rs.Close
+250   Set rs = Nothing
+
+Exit_GetDayId:
+260       Exit Function
+
+Err_GetDayId:
+      '    MsgBox Err.Description
+270       Call GlobalErrorHandler("mdlPvUpload", "GetDayId", "Function")
+
+280       Resume Exit_GetDayId
+          
+End Function

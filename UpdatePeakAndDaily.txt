@@ -1,0 +1,75 @@
+Public Sub UpdatePeakAndDaily(strDate As String)
+      '---------------------------------------------------------------------------------------
+      ' Procedure : UpdatePeakAndDaily
+      ' Author    : Richard Wilkinson
+      ' Date      : 26/10/2015
+      ' Purpose   :
+      '---------------------------------------------------------------------------------------
+      '
+      Dim strDbFullPath As String
+      Dim strConn As String
+      Dim strSqlPeak As String
+      Dim strSqlUpdate As String
+      Dim rs As ADODB.Recordset
+      Dim i As Integer
+      Dim sngPeak As Single
+      Dim sngEnergyToday As Single
+
+10    On Error GoTo UpdatePeakAndDaily_Error
+
+20    strDbFullPath = gstrDatabasePath & "\" & "PvDataBase.mdb"
+30    strConn = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" & strDbFullPath & ";User Id=admin;Password=;"
+
+
+40    strSqlPeak = "SELECT Max(Times.PAC) AS Peak, Max([ENERGY]) AS [Energy Today] " & _
+                   "FROM Days INNER JOIN Times ON Days.DAYID=Times.DAYID " & _
+                   "WHERE (((Days.DATE)=#" & strDate & "#));"
+50    Set rs = New ADODB.Recordset
+60    rs.Open strSqlPeak, strConn, adOpenKeyset, adLockOptimistic, adCmdText
+70    i = rs.RecordCount
+      'MsgBox "Peak= " & i
+80    If i = 1 Then
+90        rs.MoveFirst
+100       Print #99, "ZZZZZ get values from db: Peak=" & rs!Peak & "    Energy Today=" & rs![Energy Today]
+110       sngPeak = rs!Peak
+120       sngEnergyToday = rs![Energy Today]
+130          rs.Close
+140   Else
+150        Print #99, "ZZZZZ get values from db: Not retrieved" & "i=" & i
+
+      '    MsgBox "Get Peak too many records"
+160   End If
+      '140   rs.Close
+170   Set rs = Nothing
+180   i = 0
+      'strSql = "SELECT * FROM DAYS WHERE Days.[DATE]=#" & DateFromStringForSQL(strDate) & "#;"
+190   strSqlUpdate = "Select * from DAYS where [Date]=#" & strDate & "#;"
+200   Set rs = New ADODB.Recordset
+210   rs.Open strSqlUpdate, strConn, adOpenKeyset, adLockOptimistic, adCmdText
+220   i = rs.RecordCount
+230   If i = 1 Then
+240       rs.MoveFirst
+250       Print #99, "ZZZZZ Write values to db: Peak= " & sngPeak & "Energy Today=" & sngEnergyToday
+
+260       rs!Peak = sngPeak
+270       rs!EnergyToday = sngEnergyToday
+280       rs.Update
+290       rs.Close
+300   Else
+      '    MsgBox "Update Peak too many records"
+310       Print #99, "ZZZZZ Write values to db: Not updated" & "i=" & i
+
+320   End If
+      '280   rs.Close
+330   Set rs = Nothing
+
+340   On Error GoTo 0
+350   Exit Sub
+
+UpdatePeakAndDaily_Error:
+      ' Call global reporting procedure
+360   Call GlobalErrorHandler("mdlPvUpload", "UpdatePeakAndDaily", "Sub")
+
+      ' Try to continue
+370   Resume Next
+End Sub

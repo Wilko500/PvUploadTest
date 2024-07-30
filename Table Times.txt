@@ -1,0 +1,91 @@
+INSERT INTO Times (DayId, Time, Uploaded, Model, Address, MPPT, VDC1, IDC1, PDC1, VDC2, IDC2, PDC2, VAC, IAC, TINV, TINT, Energy, RISO, ILEAK, GENFREQ) 
+    VALUES();
+    
+    
+10:33;  2;        PVI-3.6-OUTD-UK;  D;  216.0;   0.6;  129.2;  249.8;   1.1;  263.3;  237.8;  1.6;  380.9;  15.8;  15.7;   446.0;  14.5;      0;         0;
+Time;   Address;  Model;         MPPT;   VDC1;  IDC1;   PDC1;   VDC2;  IDC2;   PDC2;    VAC;  IAC;    PAC;  TINV;  TINT;  ENERGY;  RISO;  ILEAK;   GENFREQ;    
+DayId	 Integer              1
+Time     STRING           17:01
+Uploaded STRING               N
+Model    INTEGER    System Name    Wrong type
+Address  INTEGER              2
+MPPT     INTEGER              D    Wrong type
+VDC1     SINGLE           200.4    
+IDC1     SINGLE             4.7
+PDC1     SINGLE           943.8
+VDC2     SINGLE           235.5
+IDC2     SINGLE             0.7
+PDC2     SINGLE           159.5
+VAC      SINGLE           244.8
+IAC      SINGLE             4.4
+PAC      SINGLE          1076.8
+TINV     SINGLE            42.1
+TINT     SINGLE            43.4
+Energy   SINGLE           15360
+RISO     SINGLE              20
+ILEAK    SINGLE               0    Wrong  missing
+GENFREQ  SINGLE               0
+
+
+INSERT INTO Times (DayId, Time, Uploaded, Model, Address, MPPT, VDC1, IDC1, PDC1, VDC2, IDC2, PDC2, VAC, IAC, TINV, TINT, Energy, RISO, ILEAK, GENFREQ) 
+    VALUES(1, '17:01', 'N', 'System Name', 2, 'D', 200.4, 4.7, 943.8, 235.5, 0.7, 159.5, 244.8, 4.4, 1076.8, 42.1, 43.4, 15360, 20,0,0);
+    
+    
+INSERT INTO Times (DayId,    Time, Uploaded,        Model, Address, MPPT,  VDC1, IDC1,  PDC1,  VDC2, IDC2,  PDC2,   VAC, IAC,   PAC,   TINV,  TINT, Energy,  RISO, GENFREQ) 
+             VALUES(2944, '17:01',      'N', 'System Name',      2,  'D', 200.4,  4.7, 943.8, 235.5,  0.7, 159.5, 244.8, 4.4, 1076.8,  42.1,  43.4, 15360,     20,       0);
+             
+  
+      sqlite3.ExecuteDirect('CREATE TABLE "TIMES"('+
+                    ' "TimeID" Integer NOT NULL PRIMARY KEY,'+
+                    ' "DayID" INTEGER NOT NULL,' +
+                    ' "Time" Char(10),'+
+                    ' "Uploaded" Char(1),'+
+                    ' "Model" INTEGER,' +
+                    ' "Address" INTEGER,' +
+                    ' "MPPT" INTEGER,' +
+                    ' "VDC1" SINGLE,' +
+                    ' "IDC1" SINGLE,' +
+                    ' "PDC1" SINGLE,' +
+                    ' "VDC2" SINGLE,' +
+                    ' "IDC2" SINGLE,' +
+                    ' "PDC2" SINGLE,' +
+                    ' "VAC"  SINGLE,' +
+                    ' "IAC"  SINGLE,' +
+                    ' "PAC"  SINGLE,' +
+                    ' "TINV" SINGLE,' +
+                    ' "TINT" SINGLE,' +
+                    ' "Energy" SINGLE,' +
+                    ' "RISO" SINGLE,' +
+                    ' "GENFREQ" SINGLE, ' +
+                    ' FOREIGN KEY ("DayID") REFERENCES "DAYS" ("DayID"), ' +
+                    ' FOREIGN KEY ("Model") REFERENCES "INVERTERS" ("InverterID"))');
+  
+  
+  
+  
+  
+             
+        dbTrans.Active:=True;
+        dbQuery.SQL.Text:='INSERT INTO TIMES (DayID, Time, Uploaded, Model, Address, MPPT, ' +
+                                              'VDC1, IDC1, PDC1, VDC2, IDC2, PDC2, VAC, ' +
+                                              'IAC, PAC, TINV, TINT, Energy, RISO, GenFreq) ' +
+                                              'VALUES (' + IntToStr(DayID) + ', ' +
+                                                       QuotedStr(tr.vTime) + ', ' +
+                                                       QuotedStr(tr.vUploaded) + ', ' +
+                                                       QuotedStr(tr.vSystemName) + ', ' +
+                                                       QuotedStr(tr.vAddress) + ', ' +
+                                                       QuotedStr(tr.vMPPT) + ', ' +
+                                                       FloatToStrf(tr.vVDC1,ffFixed, 10, 2) + ', ' +
+                                                       FloatToStrf(tr.vIDC1,ffFixed, 10, 2) + ', ' +
+                                                       FloatToStrf(tr.vPDC1,ffFixed, 10, 2) + ', ' +
+                                                       FloatToStrf(tr.vVDC2,ffFixed, 10, 2) + ', ' +
+                                                       FloatToStrf(tr.vIDC2,ffFixed, 10, 2) + ', ' +
+                                                       FloatToStrf(tr.vPDC2,ffFixed, 10, 2) + ', ' +
+                                                       FloatToStrf(tr.vVAC,ffFixed, 10, 2) + ', ' +
+                                                       FloatToStrf(tr.vIAC,ffFixed, 10, 2) + ', ' +
+                                                       FloatToStrf(tr.vPAC,ffFixed, 10, 2) + ', ' +
+                                                       FloatToStrf(tr.vTINV,ffFixed, 10, 2) + ', ' +
+                                                       FloatToStrf(tr.vTINT,ffFixed, 10, 2) + ', ' +
+                                                       FloatToStrf(tr.vEnergy,ffFixed, 10, 2) + ', ' +
+                                                       FloatToStrf(tr.vRISO,ffFixed, 10, 2) + ', ' +
+                                                       FloatToStrf(tr.vGenfreq,ffFixed, 10, 2) + ');';    

@@ -1,0 +1,36 @@
+Public Sub AppendData(strFileName As String, strFromPath As String, strToPath As String)
+      '---------------------------------------------------------------------------------------
+      ' Procedure : AppendData
+      ' Author    : Richard Wilkinson
+      ' Date      : 30/10/2015
+      ' Purpose   : Add data records from strFromPath to strToPath
+      '---------------------------------------------------------------------------------------
+      '
+      Dim strLine As String
+10    On Error GoTo AppendData_Error
+
+20    Open strFromPath & "\" & strFileName For Input As #1
+30    Open strToPath & "\" & strFileName For Append As #2
+40    Print #2, " "
+50    While Not EOF(1)
+60        Line Input #1, strLine
+70        If Len(strLine) = 0 Then
+      '       Do nothing
+80        ElseIf Mid$(strLine, 3, 1) = ":" Then
+      '       This is data line
+90            Print #2, strLine
+100       End If
+110   Wend
+120   Close #1
+130   Close #2
+
+140   On Error GoTo 0
+150   Exit Sub
+
+AppendData_Error:
+      ' Call global reporting procedure
+160   Call GlobalErrorHandler("mdlPvUpload", "AppendData", "Sub")
+
+      ' Try to continue
+170   Resume Next
+End Sub

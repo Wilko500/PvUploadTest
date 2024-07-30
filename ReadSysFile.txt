@@ -1,0 +1,82 @@
+Public Sub ReadSyFile(strDate As String, strTimeOn As String, strTimeOff As String, _
+                      sngEnergyToday As Single, sngEnergyLife As Single)
+      ' Function to read information file, yyyy-mm-dd-SY.dat file
+      Dim strPath As String
+      Dim strLine As String
+      Dim arTemp() As String
+      Dim i, j As Integer
+      Dim strErr As String
+10    On Error GoTo ReadSyFile_Error
+
+20    strPath = gstrTempPath
+30    Open strPath & "\" & strDate & "-SY.dat" For Input As #1
+40    Line Input #1, strLine    'skip date/time   Time: 14/07/2015 21:24:37
+      '50    strSystemDate = Mid$(strLine, 7, 10) ' may need error trap on this taken from InFile now
+
+
+50    Line Input #1, strLine    'System time on
+60    i = InStr(strLine, ":")
+70    j = Len(strLine)
+80    If j > i + 2 Then
+90         arTemp = Split(Mid$(strLine, i + 2), " ")
+
+100        strTimeOn = Mid$(arTemp(1), 1, 5)
+110   Else
+      '    not provided
+120        strTimeOn = "00:00"
+130   End If
+
+140   Line Input #1, strLine    'System time off
+150   i = InStr(strLine, ":")
+160   j = Len(strLine)
+170   If j > i + 2 Then
+180        arTemp = Split(Mid$(strLine, i + 2), " ")
+      '          MsgBox "!" & Mid$(strLine, i + 2) & "!" & vbCrLf & UBound(arTemp)
+190        strTimeOff = Mid$(arTemp(1), 1, 5)
+200   Else
+      '    not provided
+210        strTimeOff = "00:00"
+
+220   End If
+
+
+230   Line Input #1, strLine    'Energy today
+240   arTemp = Split(strLine, " ")
+250   If UBound(arTemp) = 0 Then
+260       sngEnergyToday = 0#
+270   Else
+280       sngEnergyToday = arTemp(2)
+290   End If
+300   Line Input #1, strLine    'Energy life
+310   arTemp = Split(strLine, " ")
+320   If UBound(arTemp) = 0 Then
+330       sngEnergyLife = 0#
+340   Else
+350       sngEnergyLife = arTemp(2)
+360   End If
+370   Close #1
+
+380   On Error GoTo 0
+390   Exit Sub
+
+ReadSyFile_Error:
+400       If Err.Number = 62 Then
+      '       Input past eof,  incomplete SysS file
+      '        strTimeOff = "00:00"
+      '        strTimeOn = "00:00"
+      '        sngEnergyToday = 0#
+      '        sngEnergyLife = 0#
+410       Else
+      '        strErr = "Error " & Err.Number & " (" & Err.Description & ") in procedure ReadSyFile of Module mdlPvUpload"
+      '        Call SendToRtfBox(frmAuroraDataUpload.rtfFileScanError, strErr, True)
+420           Call GlobalErrorHandler("mdlPvUpload", "ReadUnFile", "Sub")
+
+430       End If
+440   strTimeOff = "00:00"
+450   strTimeOn = "00:00"
+460   sngEnergyToday = 0#
+470   sngEnergyLife = 0#
+      '490   strSystemDate = "Not Available"
+480   Close #1
+490   On Error GoTo 0
+End Sub

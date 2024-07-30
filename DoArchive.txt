@@ -1,0 +1,47 @@
+Public Function DoArchive(strFileName As String, strFromPath As String, strToPath As String) As String
+      '---------------------------------------------------------------------------------------
+      ' Function  : DoArchive
+      ' Author    : Richard Wilkinson
+      ' Date      : 30/10/2015
+      ' Purpose   : Handle the archive processing, determine whether current log file should
+      '           : be archived, deleted or its data appened to existing archive
+      '           : Very Occasionally the inverter will switch on after shutting down for the
+      '           : night if light levels are raised. Inverter thinks it is morning
+      '---------------------------------------------------------------------------------------
+      '
+      Dim iCurDataRecs As Integer
+      Dim iArcDataRecs As Integer
+      Dim iRet As String
+10    On Error GoTo DoArchive_Error
+      ' Need to check if archive file exists, if not then DataRecs will fail
+20    If Not FileExists(strToPath & "\" & strFileName) Then
+      '   If no archive file exists then just do regular archive
+30        iRet = "ARC"
+40    Else
+50        iCurDataRecs = DataRecs(strFileName, strFromPath)
+60        iArcDataRecs = DataRecs(strFileName, strToPath)
+70        If iCurDataRecs = iArcDataRecs Then
+      '       Same number of data recs ok to do regular archive
+80            iRet = "ARC"
+90        ElseIf iCurDataRecs > iArcDataRecs Then
+      '       More recs in current file than archive, do regular archive
+100           iRet = "ARC"
+110       ElseIf iCurDataRecs < iArcDataRecs Then
+      '       Likely just one or two recs after inverter restart on same day
+      '       Do append and delete current file
+120           Call AppendData(strFileName, strFromPath, strToPath)
+130           Kill strFromPath & "\" & strFileName
+140           iRet = "ARCDEL"
+150       End If
+160   End If
+170   DoArchive = iRet
+180   On Error GoTo 0
+190   Exit Function
+
+DoArchive_Error:
+      ' Call global reporting procedure
+200   Call GlobalErrorHandler("mdlPvUpload", "DoArchive", "Function")
+
+      ' Try to continue
+210   Resume Next
+End Function

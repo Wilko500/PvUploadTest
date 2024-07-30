@@ -1,0 +1,118 @@
+Public Sub FileScanProcessing()
+      Dim tmp As String
+      Dim strError As String
+      Dim strDate As String
+      Dim iRecsFound As Integer
+      Dim iDup As Integer, iUpd As Integer, iZero As Integer
+      Dim strComplete As String
+      Dim strSystemName As String
+      Dim strModelNo As String
+      Dim strSystemDate As String
+      Dim strArc As String
+      ' Procedure to call various parts of FileScan processing
+      '
+      ' FileScan
+10    On Error GoTo FileScanProcessing_Error
+
+20    If gblnchkFileScan = True Then
+      '   Call FileScan
+30        tmp = ScanForLogFile   'the oldest logfile available
+40        If tmp = "Do Nothing" Then
+      '       Temporarily supress messages that no files available
+      '       Call SendToRtfBox(frmAuroraDataUpload.rtfFileScanLog, Format(Time$, "hh:mm") & " -  no files available", True)
+50        Else
+      '      Do not repeat file found messages
+60           If tmp <> gstrLastLogFileFound Then Call SendToRtfBox(frmAuroraDataUpload.rtfFileScanLog, Format(Time$, "hh:mm") & " - " & tmp & " found", True)
+70           Call CopyMoveFile(gstrLogFilePath, gstrTempPath, tmp, "C", strError)
+80        End If
+90    Else
+      '   To ensure that FileParse is not called if FileScan is turned off
+100       tmp = "Do Nothing"
+110   End If
+      '
+120   strDate = Mid$(tmp, 1, 10)   'get name part of filename ie the date
+      ' FileParse
+130   If gblnchkFileParse = True And tmp <> "Do Nothing" Then
+      '   Call fileParse
+
+140       Call FileParse(strDate, gstrTempPath, iRecsFound, strComplete)
+150       If tmp <> gstrLastLogFileFound Then Call SendToRtfBox(frmAuroraDataUpload.rtfFileScanLog, Format(Time$, "hh:mm") & " - " & tmp & " " & iRecsFound & " Record(s) found", True)
+160       Kill gstrTempPath & "\" & tmp ' delete temp copy of logfile from temp folder
+170   End If
+      '
+      ' DataBase Update
+180   If gblnchkDataBaseUpdate = True And iRecsFound > 0 And tmp <> "Do Nothing" Then
+      '   Do an update
+190       Call DataBaseUpdate(strDate, iDup, iUpd, iZero, strComplete, strSystemName, strModelNo, strSystemDate) ' if there are records to process
+200       If iUpd > 0 Then
+      '      Message  to log window
+210          Call SendToRtfBox(frmAuroraDataUpload.rtfFileScanLog, Format(Time$, "hh:mm") & " - " & tmp & " " & iUpd & " Record(s) added", True)
+      '      Update form system area
+220          frmAuroraDataUpload.txtSystemName.Text = strSystemName
+230          frmAuroraDataUpload.txtInvModel.Text = strModelNo
+240          frmAuroraDataUpload.txtSystemDate.Text = strSystemDate
+      '      Update Peak and daily energy from database, only if records have been added
+250          Call UpdatePeakAndDaily(strDate)
+260       End If
+          
+      ' strComplete=N if file is complete**strDate is date of current file***************************************************************************
+      '
+270       If iDup > 0 Then
+      '      Message  to log window
+280          If tmp <> gstrLastLogFileFound Then Call SendToRtfBox(frmAuroraDataUpload.rtfFileScanLog, Format(Time$, "hh:mm") & " - " & tmp & " " & iDup & " dup. record(s) skipped", True)
+290       End If
+      '
+300       If iZero > 0 Then
+      '      Message  to log window
+310          If tmp <> gstrLastLogFileFound Then Call SendToRtfBox(frmAuroraDataUpload.rtfFileScanError, Format(Time$, "hh:mm") & " - " & tmp & " " & iZero & "  zero record(s) ignored", True)
+320       End If
+      '   Is this file finished with?
+      '
+330       If (DateDiff("d", CDate(strDate), Now()) > 0) Then
+      '       file date is older than today
+340           If strComplete = "Y" Then
+      '           File is complete, archive
+350               Call SendToRtfBox(frmAuroraDataUpload.rtfFileScanLog, Format(Time$, "hh:mm") & " - " & tmp & " Archived", True)
+360               Call CopyMoveFile(gstrLogFilePath, gstrArchivePath, tmp, "M", strError)
+370           Else
+      '           File is partial, log
+380               If tmp <> gstrLastLogFileFound Then Call SendToRtfBox(frmAuroraDataUpload.rtfFileScanError, Format(Time$, "hh:mm") & " - " & tmp & " Warning - partial?", True)
+      '           Do archive check here as may be new file with same date
+      '           This can occur if inverter see increased light levels after night time shutdownPublic Function DoArchive(strFileName As String, strFromPath As String, strToPath As String) As String
+390               strArc = DoArchive(tmp, gstrLogFilePath, gstrArchivePath)
+400               If strArc = "ARC" Then
+410                   Call CopyMoveFile(gstrLogFilePath, gstrArchivePath, tmp, "M", strError)
+420                   Call SendToRtfBox(frmAuroraDataUpload.rtfFileScanLog, Format(Time$, "hh:mm") & " - " & tmp & " Archived", True)
+430               ElseIf strArc = "ARCDEL" Then
+440                   Call SendToRtfBox(frmAuroraDataUpload.rtfFileScanLog, Format(Time$, "hh:mm") & " - " & tmp & " Data Saved", True)
+450                   Call SendToRtfBox(frmAuroraDataUpload.rtfFileScanLog, Format(Time$, "hh:mm") & " - " & tmp & " Deleted", True)
+460               End If
+470           End If
+      '       Archive
+480       ElseIf (DateDiff("d", CDate(strDate), Now()) = 0) Then
+      '       File is today, may not be finished yet
+490           If strComplete = "Y" Then
+      '           File is complete, archive
+500               Call SendToRtfBox(frmAuroraDataUpload.rtfFileScanLog, Format(Time$, "hh:mm") & " - " & tmp & " Archived", True)
+510               Call CopyMoveFile(gstrLogFilePath, gstrArchivePath, tmp, "M", strError)
+520           Else
+      '           File is partial, may not be complete yet, do nothing
+530           End If
+540       End If
+      '   Update Peak and daily energy from database
+      '   Call UpdatePeakAndDaily(strDate)   this moved to do only if records added
+550   End If
+560   gstrLastLogFileFound = tmp   'Save last logfile name
+      '
+      ' Refresh web View
+570   Call RefreshWebPage(True)
+580   On Error GoTo 0
+590   Exit Sub
+
+FileScanProcessing_Error:
+      ' Call global reporting procedure
+600   Call GlobalErrorHandler("mdlPvUpload", "FileScanProcessing", "Sub")
+
+      ' Try to continue
+610   Resume Next
+End Sub

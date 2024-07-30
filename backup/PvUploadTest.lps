@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <Version Value="12"/>
+    <BuildModes Active="Release"/>
+    <Units>
+      <Unit>
+        <Filename Value="PvUploadTest.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos Y="16"/>
+        <UsageCount Value="208"/>
+      </Unit>
+      <Unit>
+        <Filename Value="u_frmauroradataupload.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmAuroraDataUpload"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="U_frmAuroraDataUpload"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="1"/>
+        <UsageCount Value="208"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="u_frmsettings.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmSettings"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="U_frmSettings"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="2"/>
+        <UsageCount Value="204"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="u_clsglobals.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="U_clsGlobals"/>
+        <TopLine Value="145"/>
+        <CursorPos X="23" Y="21"/>
+        <UsageCount Value="200"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="u_pvupload.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="u_PvUpload"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="106"/>
+        <CursorPos X="49" Y="115"/>
+        <UsageCount Value="200"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="/Users/richardwilkinson/LazFPC-32-322-Test-Env/lazarus/lcl/interfaces/cocoa/cocoalclintf.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="316"/>
+        <CursorPos Y="334"/>
+        <UsageCount Value="1"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../LibUnits/MyUtils.pas"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="140"/>
+        <CursorPos X="11" Y="160"/>
+        <UsageCount Value="12"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="/Users/richardwilkinson/LazFPC-399-331/lazarus/components/lazutils/fileutil.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="676"/>
+        <CursorPos X="27" Y="692"/>
+        <UsageCount Value="3"/>
+      </Unit>
+      <Unit>
+        <Filename Value="u_timerstuff.pas"/>
+        <UnitName Value="u_TimerStuff"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="17"/>
+        <CursorPos X="5" Y="37"/>
+        <UsageCount Value="20"/>
+      </Unit>
+      <Unit>
+        <Filename Value="/Users/richardwilkinson/LazFPC-34-322/lazarus/lcl/interfaces/cocoa/cocoawindows.pas"/>
+        <UnitName Value="CocoaWindows"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="495"/>
+        <CursorPos Y="513"/>
+        <UsageCount Value="10"/>
+      </Unit>
+    </Units>
+    <Debugger>
+      <Backend Value="IDE"/>
+    </Debugger>
+    <JumpHistory HistoryIndex="29">
+      <Position>
+        <Filename Value="u_frmsettings.pas"/>
+        <Caret Line="347" Column="32" TopLine="329"/>
+      </Position>
+      <Position>
+        <Filename Value="u_frmsettings.pas"/>
+        <Caret Line="361" Column="32" TopLine="343"/>
+      </Position>
+      <Position>
+        <Filename Value="u_frmsettings.pas"/>
+        <Caret Line="370" Column="30" TopLine="352"/>
+      </Position>
+      <Position>
+        <Filename Value="u_frmsettings.pas"/>
+        <Caret Line="369" Column="33" TopLine="338"/>
+      </Position>
+      <Position>
+        <Filename Value="u_frmsettings.pas"/>
+        <Caret Line="168" Column="32" TopLine="149"/>
+      </Position>
+      <Position>
+        <Filename Value="u_frmsettings.pas"/>
+        <Caret Line="281" Column="32" TopLine="250"/>
+      </Position>
+      <Position>
+        <Filename Value="u_frmsettings.pas"/>
+        <Caret Line="295" Column="32" TopLine="264"/>
+      </Position>
+      <Position>
+        <Filename Value="u_frmsettings.pas"/>
+        <Caret Line="309" Column="32" TopLine="278"/>
+      </Position>
+      <Position>
+        <Filename Value="u_frmsettings.pas"/>
+        <Caret Line="323" Column="32" TopLine="292"/>
+      </Position>
+      <Position>
+        <Filename Value="u_frmsettings.pas"/>
+        <Caret Line="332" Column="32" TopLine="301"/>
+      </Position>
+      <Position>
+        <Filename Value="u_frmsettings.pas"/>
+        <Caret Line="346" Column="34" TopLine="315"/>
+      </Position>
+      <Position>
+        <Filename Value="u_frmsettings.pas"/>
+        <Caret Line="444" Column="33" TopLine="418"/>
+      </Position>
+      <Position>
+        <Filename Value="u_frmsettings.pas"/>
+        <Caret Line="383" Column="38" TopLine="367"/>
+      </Position>
+      <Position>
+        <Filename Value="u_frmsettings.pas"/>
+        <Caret Line="409" Column="40" TopLine="398"/>
+      </Position>
+      <Position>
+        <Filename Value="u_frmsettings.pas"/>
+        <Caret Line="144" Column="31" TopLine="126"/>
+      </Position>
+      <Position>
+        <Filename Value="u_frmsettings.pas"/>
+        <Caret Line="170" Column="17" TopLine="152"/>
+      </Position>
+      <Position>
+        <Filename Value="u_frmsettings.pas"/>
+        <Caret Line="283" Column="17" TopLine="264"/>
+      </Position>
+      <Position>
+        <Filename Value="u_frmsettings.pas"/>
+        <Caret Line="295" Column="6" TopLine="278"/>
+      </Position>
+      <Position>
+        <Filename Value="u_frmsettings.pas"/>
+        <Caret Line="308" Column="6" TopLine="291"/>
+      </Position>
+      <Position>
+        <Filename Value="u_frmsettings.pas"/>
+        <Caret Line="321" Column="6" TopLine="304"/>
+      </Position>
+      <Position>
+        <Filename Value="u_frmsettings.pas"/>
+        <Caret Line="330" Column="17" TopLine="312"/>
+      </Position>
+      <Position>
+        <Filename Value="u_frmsettings.pas"/>
+        <Caret Line="342" Column="8" TopLine="325"/>
+      </Position>
+      <Position>
+        <Filename Value="u_frmsettings.pas"/>
+        <Caret Line="355" Column="8" TopLine="338"/>
+      </Position>
+      <Position>
+        <Filename Value="u_frmsettings.pas"/>
+        <Caret Line="363" Column="6" TopLine="346"/>
+      </Position>
+      <Position>
+        <Filename Value="u_frmsettings.pas"/>
+        <Caret Line="376" Column="8" TopLine="359"/>
+      </Position>
+      <Position>
+        <Filename Value="u_frmsettings.pas"/>
+        <Caret Line="439" Column="29" TopLine="402"/>
+      </Position>
+      <Position>
+        <Filename Value="u_frmsettings.pas"/>
+        <Caret Line="206" Column="30" TopLine="174"/>
+      </Position>
+      <Position>
+        <Filename Value="u_frmsettings.pas"/>
+        <Caret Line="204" Column="32" TopLine="188"/>
+      </Position>
+      <Position>
+        <Filename Value="u_frmauroradataupload.pas"/>
+        <Caret Line="153" Column="44" TopLine="144"/>
+      </Position>
+      <Position>
+        <Filename Value="u_frmauroradataupload.pas"/>
+        <Caret Line="189" Column="7" TopLine="2"/>
+      </Position>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+  <Debugging>
+    <Watches>
+      <Item>
+        <Expression Value="frmSettings.txtPvUploadStartDelay.text"/>
+      </Item>
+    </Watches>
+  </Debugging>
+</CONFIG>
